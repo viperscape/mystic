@@ -1,6 +1,7 @@
 {
     "name": "mystic",
     "version": "0.1.0",
+    "main": "build/main.js",
     "author": {
         "email": "chrisfgill@gmail.com",
         "name": "viperscape",
@@ -12,6 +13,7 @@
     },
     "devDependencies": {
         "browserify": "^14.4.0",
+        "electron": "^1.7.5",
         "gulp": "^3.9.1",
         "gulp-clean": "^0.3.2",
         "gulp-typescript": "^3.2.1",
