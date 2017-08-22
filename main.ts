@@ -19,7 +19,7 @@ let win;
 
 function createWindow () {
   // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 600,
+  win = new BrowserWindow({width: 600, height: 600,
       webPreferences: {
         webSecurity: false
       }
@@ -33,7 +33,7 @@ function createWindow () {
   }));
 
   // Open the DevTools.
-  win.webContents.openDevTools();
+  //win.webContents.openDevTools();
 
   win.on('closed', () => {
     win = null

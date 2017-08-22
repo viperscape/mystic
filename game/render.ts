@@ -1,10 +1,13 @@
 import pixi = require("pixi.js");
 import three = require("three");
 
+const WIDTH = window.innerWidth;
+const HEIGHT = window.innerHeight;
+
 export function render (target_gui) {
     let target = document.getElementById(target_gui);
 
-    const ctx_2d = new pixi.Application(600, 600, { transparent: true });
+    const ctx_2d = new pixi.Application(WIDTH, HEIGHT, { transparent: true });
     target.appendChild(ctx_2d.view);
 
     const ctx_3d = new three.WebGLRenderer({antialias:true, alpha:true});
@@ -23,10 +26,7 @@ function draw_test(ctx) {
     ctx.stage.addChild(text);
 }
 
-function draw_3d(ctx) {
-    const WIDTH = window.innerWidth;
-    const HEIGHT = window.innerHeight;
-    
+function draw_3d(ctx) {    
     const VIEW_ANGLE = 45;
     const ASPECT = WIDTH / HEIGHT;
     const NEAR = 0.1;

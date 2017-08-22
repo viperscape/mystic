@@ -1,0 +1,14 @@
+{
+    "potions":{
+        "poldark": {
+            "kind": "elixer",
+            "health": 5,
+            "stamina": 10
+        },
+        "fang": {
+            "kind": "berzerk",
+            "stamina": 20,
+            "strength": 15
+        }
+    }
+} 

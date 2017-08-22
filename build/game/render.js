@@ -2,9 +2,11 @@
 exports.__esModule = true;
 var pixi = require("pixi.js");
 var three = require("three");
+var WIDTH = window.innerWidth;
+var HEIGHT = window.innerHeight;
 function render(target_gui) {
     var target = document.getElementById(target_gui);
-    var ctx_2d = new pixi.Application(600, 600, { transparent: true });
+    var ctx_2d = new pixi.Application(WIDTH, HEIGHT, { transparent: true });
     target.appendChild(ctx_2d.view);
     var ctx_3d = new three.WebGLRenderer({ antialias: true, alpha: true });
     document.body.appendChild(ctx_3d.domElement);
@@ -21,8 +23,6 @@ function draw_test(ctx) {
     ctx.stage.addChild(text);
 }
 function draw_3d(ctx) {
-    var WIDTH = window.innerWidth;
-    var HEIGHT = window.innerHeight;
     var VIEW_ANGLE = 45;
     var ASPECT = WIDTH / HEIGHT;
     var NEAR = 0.1;

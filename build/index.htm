@@ -14,5 +14,8 @@
       <div id="gui" style="position: absolute"></div>
     </body>
 
-    <script>const render = require('./render.js'); render.render("gui")</script>
+    <script>
+      const game = require('./game/game.js');
+      game.run("gui")
+    </script>
 </html>
