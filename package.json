@@ -2,6 +2,9 @@
     "name": "mystic",
     "version": "0.1.0",
     "main": "build/main.js",
+    "scripts": {
+        "start": "electron ."
+    },
     "author": {
         "email": "chrisfgill@gmail.com",
         "name": "viperscape",
@@ -9,7 +12,7 @@
     },
     "dependencies": {
         "pixi.js": "^4.5.4",
-        "three.js": "^0.77.1"
+        "three": "^0.87.1"
     },
     "devDependencies": {
         "browserify": "^14.4.0",
