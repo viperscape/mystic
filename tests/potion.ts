@@ -17,4 +17,17 @@ export class PotionTests {
         assert.equal(p.attributes.health, 6);
         assert.equal(p.attributes.insight, 2);
     }
+
+    undefined_potion_attributes () {
+        let p = new player.Player;
+        p.attributes.insight = 5;
+        p.attributes.health = 1;
+
+        let potion = new items.Potion;
+        potion.from({health: 5}); // the rest is undefined!
+        potion.use(p);
+
+        assert.equal(p.attributes.health, 6);
+        assert.equal(p.attributes.insight, 5);
+    }
 }

@@ -17,6 +17,16 @@ var PotionTests = /** @class */ (function () {
         tests_1.assert.equal(p.attributes.health, 6);
         tests_1.assert.equal(p.attributes.insight, 2);
     };
+    PotionTests.prototype.undefined_potion_attributes = function () {
+        var p = new player.Player;
+        p.attributes.insight = 5;
+        p.attributes.health = 1;
+        var potion = new items.Potion;
+        potion.from({ health: 5 }); // the rest is undefined!
+        potion.use(p);
+        tests_1.assert.equal(p.attributes.health, 6);
+        tests_1.assert.equal(p.attributes.insight, 5);
+    };
     return PotionTests;
 }());
 exports.PotionTests = PotionTests;
