@@ -1,4 +1,4 @@
-import {assert} from "./unit";
+import {assert} from "./tests";
 
 const player = require("../game/player");
 const items = require("../game/items");
