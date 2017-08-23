@@ -1,26 +1,28 @@
 {
-    "name": "mystic",
-    "version": "0.1.0",
-    "main": "build/main.js",
-    "scripts": {
-        "start": "electron ."
-    },
-    "author": {
-        "email": "chrisfgill@gmail.com",
-        "name": "viperscape",
-        "url": ""
-    },
-    "dependencies": {
-        "pixi.js": "^4.5.4",
-        "three": "^0.87.1"
-    },
-    "devDependencies": {
-        "browserify": "^14.4.0",
-        "electron": "^1.7.5",
-        "gulp": "^3.9.1",
-        "gulp-clean": "^0.3.2",
-        "gulp-typescript": "^3.2.1",
-        "typescript": "^2.4.2",
-        "vinyl-source-stream": "^1.1.0"
-    }
+  "name": "mystic",
+  "version": "0.1.0",
+  "main": "build/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node ./build/tests/unit.js"
+  },
+  "author": {
+    "email": "chrisfgill@gmail.com",
+    "name": "viperscape",
+    "url": ""
+  },
+  "dependencies": {
+    "pixi.js": "^4.5.4",
+    "three": "^0.87.1"
+  },
+  "devDependencies": {
+    "browserify": "^14.4.0",
+    "chai": "^4.1.1",
+    "electron": "^1.7.5",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-typescript": "^3.2.1",
+    "typescript": "^2.4.2",
+    "vinyl-source-stream": "^1.1.0"
+  }
 }

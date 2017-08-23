@@ -1,7 +1,9 @@
 "use strict";
 exports.__esModule = true;
 var items_ = require("../assets/items.json");
+var player_1 = require("./player");
 // NOTE: from methods transform a generic Object parsed from JSON into said class
+/// load items from game data
 function load() {
     var i = new Items;
     i.from(items_);
@@ -22,24 +24,25 @@ var Items = /** @class */ (function () {
     };
     return Items;
 }());
+exports.Items = Items;
 var Potion = /** @class */ (function () {
     function Potion() {
         this.name = "unknown potion";
         this.kind = "unknown kind";
-        this.strength = 0;
-        this.stamina = 0;
-        this.health = 0;
-        this.concentration = 0;
-        this.insight = 0;
+        this.attributes = new player_1.Attributes;
     }
     Potion.prototype.from = function (obj) {
         this.name = obj["name"];
         this.kind = obj["kind"];
-        this.strength = obj["strength"];
-        this.stamina = obj["stamia"];
-        this.health = obj["health"];
-        this.concentration = obj["concentration"];
-        this.insight = obj["insight"];
+        this.attributes.from(obj);
+    };
+    Potion.prototype.use = function (p) {
+        for (var i in this.attributes) {
+            if (this.attributes.hasOwnProperty(i)) {
+                p.attributes[i] += this.attributes[i]; // apply modifiers
+            }
+        }
     };
     return Potion;
 }());
+exports.Potion = Potion;
