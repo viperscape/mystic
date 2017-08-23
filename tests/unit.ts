@@ -6,9 +6,8 @@ import {PotionTests} from "./potion";
 class Tests {
     tests = [];
     
-    constructor () {
-        this.tests.push(new PotionTests);
-
+    constructor (tests_: any[]) {
+        this.tests = tests_;
         this.run()
     }
 
@@ -16,11 +15,12 @@ class Tests {
         this.tests.forEach((e) => {
             console.log("Running tests for:",e);
             for (var i in e) {
-                console.log("  test:",i);
+                console.log("  Test:",i);
                 e[i]();
             }
         });
     }
 }
 
-let _ = new Tests;
+let tests = [new PotionTests];
+let _ = new Tests(tests);
