@@ -43,6 +43,13 @@ var Potion = /** @class */ (function () {
             }
         }
     };
+    Potion.prototype.unuse = function (p) {
+        for (var i in this.attributes) {
+            if (this.attributes.hasOwnProperty(i)) {
+                p.attributes[i] -= this.attributes[i]; // apply modifiers
+            }
+        }
+    };
     return Potion;
 }());
 exports.Potion = Potion;

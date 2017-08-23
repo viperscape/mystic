@@ -53,4 +53,11 @@ export class Potion {
             }
         }
     }
+    unuse(p: Player) {
+        for (var i in this.attributes) { // assumes Attributes match!
+            if (this.attributes.hasOwnProperty(i)) { // only properties!
+                p.attributes[i] -= this.attributes[i]; // apply modifiers
+            }
+        }
+    }
 }

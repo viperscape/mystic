@@ -16,6 +16,9 @@ var PotionTests = /** @class */ (function () {
         potion.use(p);
         tests_1.assert.equal(p.attributes.health, 6);
         tests_1.assert.equal(p.attributes.insight, 2);
+        potion.unuse(p); //should reset to original status
+        tests_1.assert.equal(p.attributes.health, 1);
+        tests_1.assert.equal(p.attributes.insight, 5);
     };
     PotionTests.prototype.undefined_potion_attributes = function () {
         var p = new player.Player;

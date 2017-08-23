@@ -16,6 +16,10 @@ export class PotionTests {
 
         assert.equal(p.attributes.health, 6);
         assert.equal(p.attributes.insight, 2);
+
+        potion.unuse(p); //should reset to original status
+        assert.equal(p.attributes.health, 1);
+        assert.equal(p.attributes.insight, 5);
     }
 
     undefined_potion_attributes () {
