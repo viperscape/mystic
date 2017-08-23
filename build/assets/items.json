@@ -1,14 +1,28 @@
 {
-    "potions":{
-        "poldark": {
+    "potions": [
+        {
+            "name": "poldark",
             "kind": "elixer",
             "health": 5,
             "stamina": 10
         },
-        "fang": {
+        {
+            "name": "fang",
             "kind": "berzerk",
             "stamina": 20,
             "strength": 15
+        },
+        {
+            "name": "penumbra",
+            "kind": "mindful",
+            "concentration": -5,
+            "insight": -5
+        },
+        {
+            "name": "ginko",
+            "kind": "mindful",
+            "concentration": 5,
+            "insight": 5
         }
-    }
+    ]
 } 
