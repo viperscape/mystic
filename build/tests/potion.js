@@ -35,9 +35,9 @@ var PotionTests = /** @class */ (function () {
         var p = new player.Player;
         var potion = new items.Potion;
         potion.from({
-            "health": 5,
-            "insight": 10,
-            "unuse": { "time": 0, "ignore": ["health"] }
+            health: 5,
+            insight: 10,
+            debuff: { time: 0, ignore: ["health"] }
         });
         potion.use(p);
         setTimeout(function () {

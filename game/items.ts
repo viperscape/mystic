@@ -56,8 +56,8 @@ export class Potion {
                 p.attributes[i] += this.attributes[i]; // apply modifiers
             }
         }
-        
-        if (this.debuff.time) {
+
+        if (this.debuff.time != undefined) {
             setTimeout(() => {
                 this.unuse(p,this.debuff.ignore);
             }, this.debuff.time);
@@ -79,6 +79,7 @@ export class Debuff {
     ignore: string[] = [];
 
     from(obj: Object) {
+        if (!obj) { return }
         this.time = 
             ((obj["time"] === undefined) &&
             (typeof obj["time"] == 'number'))? 
