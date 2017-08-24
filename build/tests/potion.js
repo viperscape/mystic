@@ -30,6 +30,21 @@ var PotionTests = /** @class */ (function () {
         tests_1.assert.equal(p.attributes.health, 6);
         tests_1.assert.equal(p.attributes.insight, 5);
     };
+    /// watch for potion to wear off
+    PotionTests.prototype.debuff_potion = function () {
+        var p = new player.Player;
+        var potion = new items.Potion;
+        potion.from({
+            "health": 5,
+            "insight": 10,
+            "unuse": { "time": 0, "ignore": ["health"] }
+        });
+        potion.use(p);
+        setTimeout(function () {
+            tests_1.assert.equal(p.attributes.health, 5);
+            tests_1.assert.equal(p.attributes.insight, 0);
+        }, 1);
+    };
     return PotionTests;
 }());
 exports.PotionTests = PotionTests;

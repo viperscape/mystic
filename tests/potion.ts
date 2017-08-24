@@ -34,4 +34,23 @@ export class PotionTests {
         assert.equal(p.attributes.health, 6);
         assert.equal(p.attributes.insight, 5);
     }
+
+    /// watch for potion to wear off
+    debuff_potion() {
+        let p = new player.Player;
+
+        let potion = new items.Potion;
+        potion.from({
+            "health": 5,
+            "insight": 10,
+            "unuse": 
+                {"time": 0, "ignore": ["health"]}
+        });
+        potion.use(p);
+
+        setTimeout(() => {
+            assert.equal(p.attributes.health, 5);
+            assert.equal(p.attributes.insight, 0);
+        }, 1);
+    }
 }

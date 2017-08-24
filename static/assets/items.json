@@ -3,6 +3,10 @@
         {
             "name": "poldark",
             "kind": "elixer",
+            "unuse": {
+                "time": 60,
+                "ignore": ["health"]
+            },
             "health": 5,
             "stamina": 10
         },

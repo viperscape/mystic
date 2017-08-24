@@ -27,6 +27,7 @@ var Items = /** @class */ (function () {
 exports.Items = Items;
 var Potion = /** @class */ (function () {
     function Potion() {
+        this.debuff = {};
         this.name = "unknown potion";
         this.kind = "unknown kind";
         this.attributes = new player_1.Attributes;
@@ -34,17 +35,26 @@ var Potion = /** @class */ (function () {
     Potion.prototype.from = function (obj) {
         this.name = obj["name"];
         this.kind = obj["kind"];
+        this.debuff = obj["unuse"];
         this.attributes.from(obj);
     };
     Potion.prototype.use = function (p) {
+        var _this = this;
         for (var i in this.attributes) {
             if (this.attributes.hasOwnProperty(i)) {
                 p.attributes[i] += this.attributes[i]; // apply modifiers
             }
         }
+        if ((this.debuff) && (this.debuff.hasOwnProperty("time"))) {
+            setTimeout(function () {
+                _this.unuse(p, _this.debuff["ignore"]);
+            }, this.debuff["time"]);
+        }
     };
-    Potion.prototype.unuse = function (p) {
+    Potion.prototype.unuse = function (p, ignore) {
         for (var i in this.attributes) {
+            if ((ignore) && (ignore.indexOf(i) > -1))
+                continue; //ignore perm buffs
             if (this.attributes.hasOwnProperty(i)) {
                 p.attributes[i] -= this.attributes[i]; // apply modifiers
             }

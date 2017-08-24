@@ -39,3 +39,5 @@ function createWindow () {
     win = null
   });
 }
+
+export function get_instant() { return performance.now(); }
