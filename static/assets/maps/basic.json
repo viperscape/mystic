@@ -1,4 +1,9 @@
 {
     "name": "A basic level",
-    "layout": []
+    "layout": [
+        [1,1,"potion:mindful"],
+        [1,0,1,1],
+        [0,0,0,1,1],
+        [0,"potion:poldark",1,0]
+    ]
 }
