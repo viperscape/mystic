@@ -35,7 +35,7 @@ export class Potion {
     //modifiers
     attributes: Attributes;
 
-    debuff = {};
+    debuff = new Debuff;
 
     constructor () {
         this.name = "unknown potion";
@@ -46,7 +46,7 @@ export class Potion {
     from(obj: Object) {
         this.name = obj["name"];
         this.kind = obj["kind"];
-        this.debuff = obj["debuff"];
+        this.debuff.from(obj["debuff"]);
         this.attributes.from(obj);
     }
 
@@ -57,10 +57,10 @@ export class Potion {
             }
         }
         
-        if ((this.debuff) && (this.debuff.hasOwnProperty("time"))) {
+        if (this.debuff.time) {
             setTimeout(() => {
-                this.unuse(p,this.debuff["ignore"]);
-            }, this.debuff["time"]);
+                this.unuse(p,this.debuff.ignore);
+            }, this.debuff.time);
         }
     }
     unuse(p: Player, ignore?: string[]) {
@@ -71,5 +71,22 @@ export class Potion {
                 p.attributes[i] -= this.attributes[i]; // apply modifiers
             }
         }
+    }
+}
+
+export class Debuff {
+    time: number;
+    ignore: string[] = [];
+
+    from(obj: Object) {
+        this.time = 
+            ((obj["time"] === undefined) &&
+            (typeof obj["time"] == 'number'))? 
+                undefined:obj["time"];
+
+        this.ignore = 
+            ((obj["ignore"] === undefined) &&
+            (obj["ignore"].constructor === Array))? 
+                []:obj["ignore"];
     }
 }

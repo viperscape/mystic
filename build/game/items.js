@@ -27,7 +27,7 @@ var Items = /** @class */ (function () {
 exports.Items = Items;
 var Potion = /** @class */ (function () {
     function Potion() {
-        this.debuff = {};
+        this.debuff = new Debuff;
         this.name = "unknown potion";
         this.kind = "unknown kind";
         this.attributes = new player_1.Attributes;
@@ -35,7 +35,7 @@ var Potion = /** @class */ (function () {
     Potion.prototype.from = function (obj) {
         this.name = obj["name"];
         this.kind = obj["kind"];
-        this.debuff = obj["debuff"];
+        this.debuff.from(obj["debuff"]);
         this.attributes.from(obj);
     };
     Potion.prototype.use = function (p) {
@@ -45,10 +45,10 @@ var Potion = /** @class */ (function () {
                 p.attributes[i] += this.attributes[i]; // apply modifiers
             }
         }
-        if ((this.debuff) && (this.debuff.hasOwnProperty("time"))) {
+        if (this.debuff.time) {
             setTimeout(function () {
-                _this.unuse(p, _this.debuff["ignore"]);
-            }, this.debuff["time"]);
+                _this.unuse(p, _this.debuff.ignore);
+            }, this.debuff.time);
         }
     };
     Potion.prototype.unuse = function (p, ignore) {
@@ -63,3 +63,20 @@ var Potion = /** @class */ (function () {
     return Potion;
 }());
 exports.Potion = Potion;
+var Debuff = /** @class */ (function () {
+    function Debuff() {
+        this.ignore = [];
+    }
+    Debuff.prototype.from = function (obj) {
+        this.time =
+            ((obj["time"] === undefined) &&
+                (typeof obj["time"] == 'number')) ?
+                undefined : obj["time"];
+        this.ignore =
+            ((obj["ignore"] === undefined) &&
+                (obj["ignore"].constructor === Array)) ?
+                [] : obj["ignore"];
+    };
+    return Debuff;
+}());
+exports.Debuff = Debuff;
