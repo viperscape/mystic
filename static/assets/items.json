@@ -14,19 +14,28 @@
             "name": "fang",
             "kind": "berzerk",
             "stamina": 20,
-            "strength": 15
+            "strength": 15,
+            "debuff": {
+                "time": 25
+            }
         },
         {
             "name": "penumbra",
             "kind": "mindful",
             "concentration": -5,
-            "insight": -5
+            "insight": -5,
+            "debuff": {
+                "time": 25
+            }
         },
         {
             "name": "ginko",
             "kind": "mindful",
             "concentration": 5,
-            "insight": 5
+            "insight": 5,
+            "debuff": {
+                "time": 25
+            }
         }
     ]
 } 
