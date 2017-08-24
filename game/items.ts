@@ -46,7 +46,7 @@ export class Potion {
     from(obj: Object) {
         this.name = obj["name"];
         this.kind = obj["kind"];
-        this.debuff = obj["unuse"];
+        this.debuff = obj["debuff"];
         this.attributes.from(obj);
     }
 

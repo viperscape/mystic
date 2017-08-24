@@ -3,7 +3,7 @@
         {
             "name": "poldark",
             "kind": "elixer",
-            "unuse": {
+            "debuff": {
                 "time": 60,
                 "ignore": ["health"]
             },
