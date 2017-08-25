@@ -12,17 +12,17 @@
     "url": ""
   },
   "dependencies": {
-    "pixi.js": "^4.5.4",
+    "pixi.js": "^4.5.5",
     "three": "^0.87.1"
   },
   "devDependencies": {
     "browserify": "^14.4.0",
     "chai": "^4.1.1",
-    "electron": "^1.7.5",
+    "electron": "^1.7.6",
     "gulp": "^3.9.1",
     "gulp-clean": "^0.3.2",
-    "gulp-typescript": "^3.2.1",
-    "typescript": "^2.4.2",
+    "gulp-typescript": "^3.2.2",
+    "typescript": "^2.5.1",
     "vinyl-source-stream": "^1.1.0"
   }
 }
