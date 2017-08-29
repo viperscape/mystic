@@ -27,15 +27,25 @@ export class Map {
                 let stone_brown = 0x4b331d;
                 let stone_grey = 0x424242;
 
+                if (e["potion"]) {
+                    var cone = new Three.ConeGeometry(0.5, 1);
+                    mat.color = 0x40E0D0;
+                    var material = new Three.MeshBasicMaterial(mat);
+                    var mesh = new Three.Mesh(cone, material);
+                    r.scene.add(mesh);
+                    mesh.position.x = eidx;
+                    mesh.position.z = ridx;
+                }
+
                 if (e["tile"] == "stone-grey") mat.color = stone_grey;
                 else mat.color = stone_brown;
 
-                var geometry = new Three.BoxGeometry(1,0,1);
+                var cube = new Three.BoxGeometry(1,0,1);
                 var material = new Three.MeshBasicMaterial(mat);
-                var cube = new Three.Mesh(geometry, material);
-                r.scene.add(cube);
-                cube.position.x = eidx;
-                cube.position.z = ridx;
+                var mesh = new Three.Mesh(cube, material);
+                r.scene.add(mesh);
+                mesh.position.x = eidx;
+                mesh.position.z = ridx;
             });
         });
 
