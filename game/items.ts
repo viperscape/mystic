@@ -81,13 +81,13 @@ export class Debuff {
     from(obj: Object) {
         if (!obj) { return }
         this.time = 
-            ((obj["time"] === undefined) &&
-            (typeof obj["time"] == 'number'))? 
+            ((obj["time"] === undefined) ||
+            (typeof obj["time"] != 'number'))? 
                 undefined:obj["time"];
 
         this.ignore = 
-            ((obj["ignore"] === undefined) &&
-            (obj["ignore"].constructor === Array))? 
+            ((obj["ignore"] === undefined) ||
+            (obj["ignore"].constructor != Array))? 
                 []:obj["ignore"];
     }
 }
