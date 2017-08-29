@@ -21,15 +21,19 @@ export class Map {
     }
 
     render (r:Renderer) {
-        var geometry = new Three.BoxGeometry(1,1,1);
-        var material = new Three.MeshNormalMaterial();
-        var cube = new Three.Mesh(geometry, material);
-        r.scene.add(cube);
+        this.layout.forEach((row, ridx) => {
+            row.forEach((e, eidx) => {
+                var geometry = new Three.BoxGeometry(1,0,1);
+                var material = new Three.MeshNormalMaterial();
+                var cube = new Three.Mesh(geometry, material);
+                r.scene.add(cube);
+                cube.position.x = eidx;
+                cube.position.z = ridx;
+            });
+        });
 
         let draw = (r: Renderer) => {
-            var delta = r.clock.getDelta();
-            cube.rotation.x += 3.2 * delta;
-            cube.rotation.y += 3.2 * delta;
+
         };
 
         this.renderable = r.new(draw);

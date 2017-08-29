@@ -52,7 +52,9 @@ export function init_3d(): Renderer {
     ctx.setSize(WIDTH, HEIGHT);
 
     
-    camera.position.z = 5;
+    camera.position.y = 10;
+
+    camera.lookAt(new three.Vector3(0,0,0));
 
     return new Renderer(ctx,scene,camera);
 }
