@@ -1,20 +1,19 @@
 import pixi = require("pixi.js");
 import three = require("three");
 
-const WIDTH = window.innerWidth;
-const HEIGHT = window.innerHeight;
 
 export function render (target_gui) {
+    const WIDTH = window.innerWidth;
+    const HEIGHT = window.innerHeight;
+
     let target = document.getElementById(target_gui);
 
     const ctx_2d = new pixi.Application(WIDTH, HEIGHT, { transparent: true });
     target.appendChild(ctx_2d.view);
 
-    const ctx_3d = new three.WebGLRenderer({antialias:true, alpha:true});
-    document.body.appendChild(ctx_3d.domElement);
+    
 
     draw_test(ctx_2d);
-    draw_3d(ctx_3d);
 }
 
 function draw_test(ctx) {
@@ -26,7 +25,13 @@ function draw_test(ctx) {
     ctx.stage.addChild(text);
 }
 
-function draw_3d(ctx) {    
+export function init_3d(): Renderer {
+    const ctx = new three.WebGLRenderer({antialias:true, alpha:true});
+    document.body.appendChild(ctx.domElement);
+
+    const WIDTH = window.innerWidth;
+    const HEIGHT = window.innerHeight;
+
     const VIEW_ANGLE = 45;
     const ASPECT = WIDTH / HEIGHT;
     const NEAR = 0.1;
@@ -46,20 +51,39 @@ function draw_3d(ctx) {
     scene.add(camera);
     ctx.setSize(WIDTH, HEIGHT);
 
-    var geometry = new three.BoxGeometry(1,1,1);
-    var material = new three.MeshNormalMaterial();
-    var cube = new three.Mesh(geometry, material);
-    scene.add(cube);
-    camera.position.z = 5;
     
-    var clock = new three.Clock();
+    camera.position.z = 5;
 
-    var render = function () {
-        requestAnimationFrame(render);
-        var delta = clock.getDelta();
-        cube.rotation.x += 3.2 * delta;
-        cube.rotation.y += 3.2 * delta;
-        ctx.render(scene, camera);
-    };
-    render();
+    return new Renderer(ctx,scene,camera);
+}
+
+export class Renderer {
+    ctx;
+    scene;
+    camera;
+    clock;
+
+    constructor(ctx,scene,camera) {
+        this.ctx = ctx;
+        this.scene = scene;
+        this.camera = camera;
+        this.clock = new three.Clock();
+    }
+
+    new(fn: (r:Renderer) => void): Renderable {
+        return new Renderable(this,fn);
+    }
+}
+
+export class Renderable {
+    id: number;
+    constructor (r:Renderer, fn: (r:Renderer) => void) { 
+        let render = () => {
+            this.id = requestAnimationFrame(render);  
+            fn(r);
+            r.ctx.render(r.scene, r.camera);
+        };
+        render();
+    }
+    stop() { if (this.id.constructor == Number) cancelAnimationFrame(this.id); }
 }
