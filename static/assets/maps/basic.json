@@ -1,9 +1,17 @@
 {
     "name": "A basic level",
     "layout": [
-        [1,1,"potion:mindful"],
+        [1,1,2],
         [1,0,1,1],
         [0,0,0,1,1],
-        [0,"potion:poldark",1,0]
+        [0,2,1,0]
+    ],
+    "tiles": [
+        {"tile":"stone-grey"},
+        {"tile":"stone-brown"},
+        {
+            "tile":"stone-grey",
+            "potion":"mindful"
+        }
     ]
 }
