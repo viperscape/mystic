@@ -24,4 +24,25 @@ export class Items {
             this.potions.push(p);
         });
     }
+
+    find(item: string, comp: {}): any[] {
+        let m = [];
+        let search;
+        if (item == "potion") search = this.potions;
+
+        if (search) {
+            for (var e in search) {
+                var matches = true;
+                for (var prop in comp) {
+                    if (!search[e].hasOwnProperty(prop)) matches = false;
+                    else matches = (search[e][prop] === comp[prop])
+                }
+
+                if (matches) m.push(search[e]);
+            }
+        }
+
+        console.log('find',m);
+        return m;
+    }
 }

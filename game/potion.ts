@@ -20,7 +20,7 @@ export class Potion {
     }
 
     render (r:Renderer) {
-        this.renderable = new PotionRenderable(r);
+        this.renderable = new PotionRenderable(r,this);
     }
 
     from(obj: Object) {
@@ -76,10 +76,13 @@ class PotionRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
 
-    constructor (r:Renderer) {
+    constructor (r:Renderer, potion: Potion) {
         let mat = { color: 0x0, opacity: 1 };
         var cone = new Three.ConeGeometry(0.5, 1);
-        mat.color = 0x40E0D0;
+        
+        if (potion.kind == "mindful") mat.color = 0x40E0D0;
+        else mat.color = 0x222222;
+
         var material = new Three.MeshBasicMaterial(mat);
         let mesh = new Three.Mesh(cone, material);
         mesh.position.y = 0.5;

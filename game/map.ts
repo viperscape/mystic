@@ -1,14 +1,17 @@
 import {Renderable,Renderer} from "./render";
 import {Potion} from "./potion";
 import Three = require("three");
+import {Items} from "./items";
 
 export class Map {
     name: string;
     layout: any[];
     renderable: Renderable;
+    items: Items;
 
-    constructor (file:string) {
+    constructor (file:string, items?: Items) {
         this.layout = [];
+        this.items = items;
 
         let map = require("../assets/maps/"+file);
         this.name = map["name"];
@@ -28,12 +31,17 @@ export class Map {
                 let stone_brown = 0x4b331d;
                 let stone_grey = 0x424242;
 
-                if (e["potion"]) {
+                if ((e["potion"]) && (this.items)) {
                     let potion = new Potion;
-                    potion.render(r);
-                    potion.renderable.mesh.position.x = eidx;
-                    potion.renderable.mesh.position.z = ridx;
-                    potion.renderable.rotate();
+                    let p = this.items.find("potion",{kind:e["potion"]});
+                    if (p.length > 0) {
+                        potion.from(p[0]);
+                        console.log(potion);
+                        potion.render(r);
+                        potion.renderable.mesh.position.x = eidx;
+                        potion.renderable.mesh.position.z = ridx;
+                        potion.renderable.rotate();
+                    }
                 }
 
                 if (e["tile"] == "stone-grey") mat.color = stone_grey;
