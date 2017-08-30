@@ -85,11 +85,9 @@ class PotionRenderable {
         else mat.color = 0x222222;
 
         var material = new Three.MeshBasicMaterial(mat);
-        let mesh = new Three.Mesh(cone, material);
-        mesh.position.y = 0.5;
-        r.scene.add(mesh);
-
-        this.mesh = mesh;
+        this.mesh = new Three.Mesh(cone, material);
+        this.mesh.position.y = 0.5;
+        r.scene.add(this.mesh);
         
         let draw = (r: Renderer) => {
         };
@@ -99,8 +97,7 @@ class PotionRenderable {
 
     rotate () {
         let draw = (r: Renderer) => {
-            var delta = r.clock.getDelta();
-            this.mesh.rotation.y += 3.2 * delta;
+            this.mesh.rotation.y += r.delta * 45 * Math.PI / 180;
         };
         this.renderable.fn = draw;
     }

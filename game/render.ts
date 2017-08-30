@@ -65,12 +65,19 @@ export class Renderer {
     scene;
     camera;
     clock;
+    delta;
 
     constructor(ctx,scene,camera) {
         this.ctx = ctx;
         this.scene = scene;
         this.camera = camera;
         this.clock = new three.Clock();
+
+        let timer = () => {
+            requestAnimationFrame(timer);
+            this.delta = this.clock.getDelta();
+        };
+        timer(); 
     }
 
     new(fn: (r:Renderer) => void): Renderable {
