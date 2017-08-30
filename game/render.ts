@@ -53,7 +53,8 @@ export function init_3d(): Renderer {
 
     
     camera.position.y = 10;
-
+    camera.position.x= 10;
+    camera.position.z = 10;
     camera.lookAt(new three.Vector3(0,0,0));
 
     return new Renderer(ctx,scene,camera);
@@ -79,10 +80,14 @@ export class Renderer {
 
 export class Renderable {
     id: number;
-    constructor (r:Renderer, fn: (r:Renderer) => void) { 
+    fn: (r:Renderer) => void;
+
+    constructor (r:Renderer, fn: (r:Renderer) => void) {
+        this.fn = fn;
+        
         let render = () => {
             this.id = requestAnimationFrame(render);  
-            fn(r);
+            this.fn(r);
             r.ctx.render(r.scene, r.camera);
         };
         render();

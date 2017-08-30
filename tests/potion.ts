@@ -1,7 +1,7 @@
 import {assert} from "./tests";
 
 const player = require("../game/player");
-const items = require("../game/items");
+import {Potion} from "../game/potion";
 
 export class PotionTests {
     use_potion() {
@@ -9,7 +9,7 @@ export class PotionTests {
         p.attributes.insight = 5;
         p.attributes.health = 1;
 
-        let potion = new items.Potion;
+        let potion = new Potion;
         potion.attributes.health = 5;
         potion.attributes.insight = -3;
         potion.use(p);
@@ -27,7 +27,7 @@ export class PotionTests {
         p.attributes.insight = 5;
         p.attributes.health = 1;
 
-        let potion = new items.Potion;
+        let potion = new Potion;
         potion.from({health: 5}); // the rest is undefined!
         potion.use(p);
 
@@ -39,7 +39,7 @@ export class PotionTests {
     debuff_potion() {
         let p = new player.Player;
 
-        let potion = new items.Potion;
+        let potion = new Potion;
         potion.from({
             health: 5,
             insight: 10,

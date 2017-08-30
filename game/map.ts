@@ -1,4 +1,5 @@
 import {Renderable,Renderer} from "./render";
+import {Potion} from "./potion";
 import Three = require("three");
 
 export class Map {
@@ -28,13 +29,11 @@ export class Map {
                 let stone_grey = 0x424242;
 
                 if (e["potion"]) {
-                    var cone = new Three.ConeGeometry(0.5, 1);
-                    mat.color = 0x40E0D0;
-                    var material = new Three.MeshBasicMaterial(mat);
-                    var mesh = new Three.Mesh(cone, material);
-                    r.scene.add(mesh);
-                    mesh.position.x = eidx;
-                    mesh.position.z = ridx;
+                    let potion = new Potion;
+                    potion.render(r);
+                    potion.renderable.mesh.position.x = eidx;
+                    potion.renderable.mesh.position.z = ridx;
+                    potion.renderable.rotate();
                 }
 
                 if (e["tile"] == "stone-grey") mat.color = stone_grey;
@@ -50,7 +49,7 @@ export class Map {
         });
 
         let draw = (r: Renderer) => {
-
+        
         };
 
         this.renderable = r.new(draw);

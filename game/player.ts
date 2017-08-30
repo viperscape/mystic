@@ -1,4 +1,4 @@
-import {Items,Potion} from "./items";
+import {Items} from "./items";
 
 export class Player {
     items: Items;
