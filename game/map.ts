@@ -35,8 +35,8 @@ export class Map {
                     let potion = new Potion;
                     let p = this.items.find("potion",{kind:e["potion"]});
                     if (p.length > 0) {
-                        potion.from(p[0]);
-                        console.log(potion);
+                        var rand = Math.floor(Math.random()*p.length);
+                        potion.from(p[rand]);
                         potion.render(r);
                         potion.renderable.mesh.position.x = eidx;
                         potion.renderable.mesh.position.z = ridx;

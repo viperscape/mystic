@@ -81,6 +81,7 @@ class PotionRenderable {
         var cone = new Three.ConeGeometry(0.5, 1);
         
         if (potion.kind == "mindful") mat.color = 0x40E0D0;
+        else if (potion.kind == "berzerk") mat.color = 0xFF0000;
         else mat.color = 0x222222;
 
         var material = new Three.MeshBasicMaterial(mat);
