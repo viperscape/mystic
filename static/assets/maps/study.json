@@ -1,0 +1,24 @@
+{
+    "name": "The Study",
+    "layout": [
+        [1,1,2,1,0],
+        [3,1,3,1,1],
+        [4,0,1,1,3],
+        [3,0,0,0,3],
+        [0,3,1,0,1]
+    ],
+    "tiles": [
+        {"tile":"stone-grey"},
+        {"tile":"stone-brown"},
+        {
+            "tile":"stone-grey",
+            "potion":"elixer"
+        },
+        {"tile":"stone-red"},
+        {
+            "id": 0,
+            "entry": "stone-grey",
+            "target": "The Library"
+        }
+    ]
+}

@@ -10,6 +10,6 @@ export function run(target_gui) {
     let p = new Player;
 
     let renderer = render.init_3d();
-    let map = new Map("basic.json", i);
+    let map = new Map("study.json", i);
     map.render(renderer);
 }
