@@ -7,7 +7,8 @@ export class Map {
     name: string;
     layout: any[];
     renderable: Renderable;
-    items: Items;
+    items: Items; // base game items loaded from storage
+    objects: any[]; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
     // TODO: track all rendering mesh
 
     constructor (file:string, items?: Items) {
@@ -42,11 +43,13 @@ export class Map {
                         var rand = Math.floor(Math.random()*p.length);
                         potion.from(p[rand]);
                         
-                        let renderable = this.items.potion_models[potion.kind].clone();
-                        renderable.build(r, () => {
-                            renderable.position = { x: eidx, z: ridx, y: renderable.position.y };
-                            renderable.rotate();
+                        potion.renderable = this.items.potion_models[potion.kind].clone();
+                        potion.renderable.build(r, () => {
+                            potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
+                            potion.renderable.rotate();
                         });
+
+                        this.objects.push(potion);
                     }
                 }
 
