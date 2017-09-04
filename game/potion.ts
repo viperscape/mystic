@@ -19,10 +19,6 @@ export class Potion {
         this.attributes = new Attributes;
     }
 
-    render (r:Renderer, cb?: () => void) {
-        this.renderable = new PotionRenderable(r,this, cb);
-    }
-
     from(obj: Object) {
         this.name = obj["name"];
         this.kind = obj["kind"];
@@ -72,12 +68,14 @@ export class Debuff {
     }
 }
 
-class PotionRenderable {
+export class PotionRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
-    position = {x:0,y:0,z:0};
+    position: {x:number, y:number, z:number};
 
-    constructor (r:Renderer, potion: Potion, cb?: () => void) {
+    constructor (potion?: Potion) {
+        if (!potion) return; // we have this so we can build blank classes to clone into
+
         let mat = { color: 0x0, opacity: 0.85 };
         
         if (potion.kind == "mindful") mat.color = 0x40E0D0;
@@ -89,22 +87,33 @@ class PotionRenderable {
             var material = materials[0];
             material.setValues(mat);
             this.mesh = new Three.Mesh(geometry, material);
-
-            r.scene.add(this.mesh);
-
-            let draw = (r: Renderer) => {
-                this.mesh.position.x = this.position.x;
-                this.mesh.position.y = this.position.y;
-                this.mesh.position.z = this.position.z;
-            };
-    
-            this.renderable = r.new(draw);
-
-            if (cb) cb();
         });
     }
 
+    clone(): PotionRenderable {
+        let r = new PotionRenderable(); //build blank class
+        r.mesh = this.mesh.clone(); 
+        return r;
+    }
+
+    build (r:Renderer, cb?: () => void) {
+        this.position = {x:0,y:0,z:0};
+        r.scene.add(this.mesh);
+        
+        let draw = (r: Renderer) => {
+            this.mesh.position.x = this.position.x;
+            this.mesh.position.y = this.position.y;
+            this.mesh.position.z = this.position.z;
+        };
+
+        this.renderable = r.new(draw);
+
+        if (cb) cb();
+    }
+
     rotate () {
+        if (!this.renderable) return;
+
         let draw = (r: Renderer) => {            
             this.mesh.position.x = this.position.x;
             this.mesh.position.y = this.position.y;

@@ -1,5 +1,5 @@
 const items_ = require("../assets/items.json");
-import {Potion} from "./potion";
+import {Potion,PotionRenderable} from "./potion";
 
 // NOTE: from methods transform a generic Object parsed from JSON into said class
 
@@ -12,16 +12,20 @@ export function load(): Items {
 
 export class Items {
     potions: Potion[];
+    potion_models: {string:PotionRenderable}[];
 
     constructor () {
         this.potions = [];
+        this.potion_models = [];
     }
 
     from(obj:Object) {
         obj["potions"].forEach(element => {
             let p = new Potion;
             p.from(element);
+            let r = new PotionRenderable(p);
             this.potions.push(p);
+            this.potion_models[p.kind] = r; //NOTE: we may change this to name for one-off special renderings
         });
     }
 
