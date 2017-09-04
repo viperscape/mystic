@@ -20,7 +20,7 @@ gulp.task('typescript', function() {
 
 /// copy static assets
 gulp.task('static', function() {
-    return gulp.src('static/**/*.*')
+    return gulp.src(['static/**/*.*','!static/**/*.blend*'])
         .pipe(gulp.dest("build"));
 });
 
