@@ -5,11 +5,12 @@ import {Map} from "./map";
 
 export function run(target_gui) {
     //render.render(target_gui);
-    let i = items.load();
-    console.log(i);
-    let p = new Player;
+    items.load(function (i) {
+        console.log(i);
+        let p = new Player;
 
-    let renderer = render.init_3d();
-    let map = new Map("study.json", i);
-    map.render(renderer);
+        let renderer = render.init_3d();
+        let map = new Map("study.json", i);
+        map.render(renderer);
+    });
 }

@@ -73,7 +73,7 @@ export class PotionRenderable {
     mesh: Three.Mesh;
     position: {x:number, y:number, z:number};
 
-    constructor (potion?: Potion) {
+    constructor (potion?: Potion, cb?: () => void) {
         if (!potion) return; // we have this so we can build blank classes to clone into
 
         let mat = { color: 0x0, opacity: 0.85 };
@@ -87,6 +87,7 @@ export class PotionRenderable {
             var material = materials[0];
             material.setValues(mat);
             this.mesh = new Three.Mesh(geometry, material);
+            if (cb) cb();
         });
     }
 

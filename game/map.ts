@@ -44,8 +44,8 @@ export class Map {
                         
                         let renderable = this.items.potion_models[potion.kind].clone();
                         renderable.build(r, () => {
-                            potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
-                            potion.renderable.rotate();
+                            renderable.position = { x: eidx, z: ridx, y: renderable.position.y };
+                            renderable.rotate();
                         });
                     }
                 }
