@@ -95,17 +95,15 @@ class PotionRenderable {
             r.scene.add(this.mesh);
 
             let draw = (r: Renderer) => {
-                //this.mesh.position.x = this.position.x;
-                //this.mesh.position.y = this.position.y;
-                //this.mesh.position.z = this.position.z;
+                this.mesh.position.x = this.position.x;
+                this.mesh.position.y = this.position.y;
+                this.mesh.position.z = this.position.z;
             };
     
             this.renderable = r.new(draw);
 
             if (cb) cb();
         });
-        //var material = new Three.MeshBasicMaterial(mat);
-        //this.mesh = new Three.Mesh(cone, material);
     }
 
     rotate () {
