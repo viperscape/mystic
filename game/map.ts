@@ -54,7 +54,7 @@ export class Map {
                     if (e["entry"] == "stone-grey") mat.color = stone_grey;
                     else mat.color = stone_brown;
 
-                    var material = new Three.MeshBasicMaterial(mat);
+                    var material = new Three.MeshLambertMaterial(mat);
                     var mesh = new Three.Mesh(cube, material);
                     r.scene.add(mesh);
                     mesh.position.x = eidx-0.5;
@@ -68,7 +68,7 @@ export class Map {
                 else mat.color = stone_generic;
 
                 var cube = new Three.BoxGeometry(1,0,1);
-                var material = new Three.MeshBasicMaterial(mat);
+                var material = new Three.MeshLambertMaterial(mat);
                 var mesh = new Three.Mesh(cube, material);
                 r.scene.add(mesh);
                 mesh.position.x = eidx;

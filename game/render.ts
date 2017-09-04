@@ -48,6 +48,8 @@ export function init_3d(): Renderer {
     
     const scene = new three.Scene();
     scene.background = new three.Color( 0x222222 );
+
+    scene.add(new three.AmbientLight(0xffffff));
     
     scene.add(camera);
     ctx.setSize(WIDTH, HEIGHT);
