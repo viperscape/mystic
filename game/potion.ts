@@ -19,8 +19,8 @@ export class Potion {
         this.attributes = new Attributes;
     }
 
-    render (r:Renderer) {
-        this.renderable = new PotionRenderable(r,this);
+    render (r:Renderer, cb?: () => void) {
+        this.renderable = new PotionRenderable(r,this, cb);
     }
 
     from(obj: Object) {
@@ -77,7 +77,7 @@ class PotionRenderable {
     mesh: Three.Mesh;
     position = {x:0,y:0.5,z:0};
 
-    constructor (r:Renderer, potion: Potion) {
+    constructor (r:Renderer, potion: Potion, cb?: () => void) {
         let mat = { color: 0x0, opacity: 1 };
         var cone = new Three.ConeGeometry(0.5, 1);
         
@@ -93,25 +93,26 @@ class PotionRenderable {
 
             this.mesh.position.y = this.position.y;
             r.scene.add(this.mesh);
+
+            let draw = (r: Renderer) => {
+                //this.mesh.position.x = this.position.x;
+                //this.mesh.position.y = this.position.y;
+                //this.mesh.position.z = this.position.z;
+            };
+    
+            this.renderable = r.new(draw);
+
+            if (cb) cb();
         });
         //var material = new Three.MeshBasicMaterial(mat);
         //this.mesh = new Three.Mesh(cone, material);
-        
-        
-        let draw = (r: Renderer) => {
-            //this.mesh.position.x = this.position.x;
-            //this.mesh.position.y = this.position.y;
-            //this.mesh.position.z = this.position.z;
-        };
-
-        this.renderable = r.new(draw);
     }
 
     rotate () {
         let draw = (r: Renderer) => {            
-            //this.mesh.position.x = this.position.x;
-            //this.mesh.position.y = this.position.y;
-            //this.mesh.position.z = this.position.z;
+            this.mesh.position.x = this.position.x;
+            this.mesh.position.y = this.position.y;
+            this.mesh.position.z = this.position.z;
             this.mesh.rotation.y += r.delta * 45 * Math.PI / 180;
         };
         this.renderable.fn = draw;

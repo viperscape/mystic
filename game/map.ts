@@ -41,11 +41,10 @@ export class Map {
                     if (p.length > 0) {
                         var rand = Math.floor(Math.random()*p.length);
                         potion.from(p[rand]);
-                        potion.render(r);
-                        potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
-                        //potion.renderable.mesh.position.x = eidx;
-                        //potion.renderable.mesh.position.z = ridx;
-                        potion.renderable.rotate();
+                        potion.render(r, () => {
+                            potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
+                            potion.renderable.rotate();
+                        });
                     }
                 }
 
