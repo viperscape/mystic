@@ -75,20 +75,19 @@ export class Debuff {
 class PotionRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
-    position = {x:0,y:0.5,z:0};
+    position = {x:0,y:0,z:0};
 
     constructor (r:Renderer, potion: Potion, cb?: () => void) {
-        let mat = { color: 0x0, opacity: 1 };
-        var cone = new Three.ConeGeometry(0.5, 1);
+        let mat = { color: 0x0, opacity: 0.85 };
         
         if (potion.kind == "mindful") mat.color = 0x40E0D0;
         else if (potion.kind == "berzerk") mat.color = 0xFF0000;
         else mat.color = 0x222222;
 
         let loader = new Three.JSONLoader();
-        loader.load('./assets/maps/box.json', (geometry, materials) => {
+        loader.load('./assets/models/potion.json', (geometry, materials) => {
             var material = materials[0];
-            //material.color.setHex(mat.color);
+            material.setValues(mat);
             this.mesh = new Three.Mesh(geometry, material);
 
             r.scene.add(this.mesh);
