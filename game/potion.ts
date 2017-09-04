@@ -91,7 +91,6 @@ class PotionRenderable {
             //material.color.setHex(mat.color);
             this.mesh = new Three.Mesh(geometry, material);
 
-            this.mesh.position.y = this.position.y;
             r.scene.add(this.mesh);
 
             let draw = (r: Renderer) => {
