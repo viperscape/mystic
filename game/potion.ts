@@ -75,6 +75,7 @@ export class Debuff {
 class PotionRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
+    position = {x:0,y:0.5,z:0};
 
     constructor (r:Renderer, potion: Potion) {
         let mat = { color: 0x0, opacity: 1 };
@@ -84,19 +85,33 @@ class PotionRenderable {
         else if (potion.kind == "berzerk") mat.color = 0xFF0000;
         else mat.color = 0x222222;
 
-        var material = new Three.MeshBasicMaterial(mat);
-        this.mesh = new Three.Mesh(cone, material);
-        this.mesh.position.y = 0.5;
-        r.scene.add(this.mesh);
+        let loader = new Three.JSONLoader();
+        loader.load('./assets/maps/box.json', (geometry, materials) => {
+            var material = materials[0];
+            //material.color.setHex(mat.color);
+            this.mesh = new Three.Mesh(geometry, material);
+
+            this.mesh.position.y = this.position.y;
+            r.scene.add(this.mesh);
+        });
+        //var material = new Three.MeshBasicMaterial(mat);
+        //this.mesh = new Three.Mesh(cone, material);
+        
         
         let draw = (r: Renderer) => {
+            //this.mesh.position.x = this.position.x;
+            //this.mesh.position.y = this.position.y;
+            //this.mesh.position.z = this.position.z;
         };
 
         this.renderable = r.new(draw);
     }
 
     rotate () {
-        let draw = (r: Renderer) => {
+        let draw = (r: Renderer) => {            
+            //this.mesh.position.x = this.position.x;
+            //this.mesh.position.y = this.position.y;
+            //this.mesh.position.z = this.position.z;
             this.mesh.rotation.y += r.delta * 45 * Math.PI / 180;
         };
         this.renderable.fn = draw;

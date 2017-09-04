@@ -42,8 +42,9 @@ export class Map {
                         var rand = Math.floor(Math.random()*p.length);
                         potion.from(p[rand]);
                         potion.render(r);
-                        potion.renderable.mesh.position.x = eidx;
-                        potion.renderable.mesh.position.z = ridx;
+                        potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
+                        //potion.renderable.mesh.position.x = eidx;
+                        //potion.renderable.mesh.position.z = ridx;
                         potion.renderable.rotate();
                     }
                 }
