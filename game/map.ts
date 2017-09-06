@@ -9,7 +9,6 @@ export class Map {
     renderable: Renderable;
     items: Items; // base game items loaded from storage
     objects: any[]; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
-    // TODO: track all rendering mesh
 
     constructor (file:string, items?: Items) {
         this.layout = [];
