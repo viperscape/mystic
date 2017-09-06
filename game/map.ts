@@ -13,6 +13,7 @@ export class Map {
 
     constructor (file:string, items?: Items) {
         this.layout = [];
+        this.objects = [];
         this.items = items;
 
         let map = require("../assets/maps/"+file);
@@ -48,7 +49,7 @@ export class Map {
                             potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
                             potion.renderable.rotate();
                         });
-
+                        
                         this.objects.push(potion);
                     }
                 }
