@@ -2,6 +2,7 @@ import {Renderable,Renderer} from "./render";
 import {Potion} from "./potion";
 import Three = require("three");
 import {Items} from "./items";
+import {Player} from "./player";
 
 export class Map {
     name: string;
@@ -9,6 +10,7 @@ export class Map {
     renderable: Renderable;
     items: Items; // base game items loaded from storage
     objects: any[]; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
+    player: Player;
 
     constructor (file:string, items?: Items) {
         this.layout = [];
@@ -52,8 +54,7 @@ export class Map {
                         this.objects.push(potion);
                     }
                 }
-
-                if (e["entry"]) {
+                else if (e["entry"]) {
                     // TODO: figure out direction of door to line up with wall
                     var cube = new Three.BoxGeometry(0.25,2,1);
                     if (e["entry"] == "stone-grey") mat.color = stone_grey;
@@ -65,6 +66,14 @@ export class Map {
                     mesh.position.x = eidx-0.5;
                     mesh.position.y += 1;
                     mesh.position.z = ridx;
+                }
+                else if (e["spawn"]) {
+                    if (e["spawn"] == "player") {
+                        this.player = new Player();
+                        this.player.render(r,() => {
+                            this.player.renderable.position = { x: eidx, z: ridx, y: 0 };
+                        });
+                    }
                 }
 
                 if (e["tile"] == "stone-grey") mat.color = stone_grey;
