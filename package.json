@@ -12,6 +12,7 @@
     "url": ""
   },
   "dependencies": {
+    "javascript-astar": "^0.4.1",
     "pixi.js": "^4.5.5",
     "three": "^0.87.1"
   },

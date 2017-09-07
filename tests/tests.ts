@@ -13,8 +13,10 @@ export class Tests {
         this.tests.forEach((e) => {
             console.log("Running tests for:",e);
             for (var i in e) {
-                console.log("  Test:",i);
-                e[i]();
+                if (typeof e[i] === "function") {
+                    console.log("  Test:",i);
+                    e[i]();
+                }
             }
         });
     }

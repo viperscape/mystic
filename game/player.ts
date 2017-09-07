@@ -6,6 +6,7 @@ export class Player {
     items: Items;
     attributes: Attributes;
     renderable: PlayerRenderable;
+    position: [number,number]; //tile position
 
     constructor() {
         this.items = new Items;
