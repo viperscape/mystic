@@ -53,6 +53,7 @@ export function init_3d(): Renderer {
     
     scene.add(camera);
     ctx.setSize(WIDTH, HEIGHT);
+    ctx.setPixelRatio( window.devicePixelRatio );
 
     
     camera.position.y = 10;

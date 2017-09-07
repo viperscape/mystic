@@ -12,6 +12,24 @@ export function run(target_gui) {
         map.render(renderer);
 
         let move = new Move(map.player.position, [0,3], map);
-        console.log(move);
+        
+        check_input();
+        check_resize(renderer);
     });
+}
+
+function check_input () {
+    document.addEventListener('mousedown', onMouseDown, false);
+    function onMouseDown(e) {
+        console.log(e);
+    }
+}
+
+function check_resize(r: render.Renderer) {
+    window.addEventListener( 'resize', onWindowResize, false );
+    function onWindowResize(e) {
+        r.camera.aspect = window.innerWidth / window.innerHeight;
+        r.camera.updateProjectionMatrix();
+        r.ctx.setSize( window.innerWidth, window.innerHeight );
+    }
 }
