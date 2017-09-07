@@ -13,6 +13,7 @@ export class Move {
             let row_ = [];
             row.forEach((e, eidx) => {
                 // for now just push a regular/moveable tile
+                // TODO: evaluate whats on tile in map (monster, object) and add weighted value
                 row_.push(1); // 1 is accessible, 0 is not
             });
             layout.push(row_);
