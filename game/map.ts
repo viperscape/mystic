@@ -73,6 +73,7 @@ export class Map {
                         this.player.position = [eidx,ridx];
                         this.player.render(r,() => {
                             this.player.renderable.position = { x: eidx, z: ridx, y: 0 };
+                            r.camera.lookAt(new Three.Vector3(eidx,0,ridx));
                         });
                     }
                 }
