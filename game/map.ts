@@ -18,6 +18,7 @@ export class Map {
     constructor (file:string, items?: Items) {
         this.layout = [];
         this.objects = [];
+        this.tiles = [];
         this.items = items;
 
         let map = require("../assets/maps/"+file);
@@ -81,6 +82,7 @@ export class Map {
                 if (e["tile"]) {
                     let tile = new Tile([eidx,ridx],e["tile"]);
                     tile.render(r);
+                    this.tiles.push(tile);
                 }
             });
         });

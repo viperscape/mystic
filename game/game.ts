@@ -30,7 +30,7 @@ function check_input (r: render.Renderer, map: Map) {
         mouse.y = - ( event.clientY / r.ctx.domElement.clientHeight ) * 2 + 1;
         raycaster.setFromCamera( mouse, r.camera );
         let objects: Three.Mesh[] = [];
-        map.objects.forEach((e) => { objects.push(e.renderable.mesh) }); // TODO: track tiles, player, and items separately
+        map.tiles.forEach((e) => { objects.push(e.renderable.mesh) }); // TODO: track tiles, player, and items separately
 
         let intersects = raycaster.intersectObjects( objects );
         if ( intersects.length > 0 ) {
