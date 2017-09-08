@@ -3,12 +3,15 @@ import {Potion} from "./potion";
 import Three = require("three");
 import {Items} from "./items";
 import {Player} from "./player";
+import {Tile} from "./tile";
 
 export class Map {
     name: string;
     layout: any[];
     renderable: Renderable;
     items: Items; // base game items loaded from storage
+
+    tiles: Tile[];
     objects: any[]; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
     player: Player;
 
@@ -31,13 +34,6 @@ export class Map {
     render (r:Renderer) {
         this.layout.forEach((row, ridx) => {
             row.forEach((e, eidx) => {
-                let mat = { color: 0x0, opacity: 1 };
-                // TODO: moves these out to assets
-                let stone_brown = 0x4b331d;
-                let stone_grey = 0x424242;
-                let stone_red = 0x905050;
-                let stone_generic = 0x656056;
-
                 if ((e["potion"]) && (this.items)) {
                     let potion = new Potion;
                     let p = this.items.find("potion",{kind:e["potion"]});
@@ -55,6 +51,10 @@ export class Map {
                     }
                 }
                 else if (e["entry"]) {
+                    let mat = { color: 0x0, opacity: 1 };
+                    let stone_brown = 0x4b331d;
+                    let stone_grey = 0x424242;
+
                     // TODO: figure out direction of door to line up with wall
                     var cube = new Three.BoxGeometry(0.25,2,1);
                     if (e["entry"] == "stone-grey") mat.color = stone_grey;
@@ -78,17 +78,10 @@ export class Map {
                     }
                 }
 
-                if (e["tile"] == "stone-grey") mat.color = stone_grey;
-                else if (e["tile"] == "stone-brown") mat.color = stone_brown;
-                else if (e["tile"] == "stone-red") mat.color = stone_red;
-                else mat.color = stone_generic;
-
-                var cube = new Three.BoxGeometry(1,0,1);
-                var material = new Three.MeshLambertMaterial(mat);
-                var mesh = new Three.Mesh(cube, material);
-                r.scene.add(mesh);
-                mesh.position.x = eidx;
-                mesh.position.z = ridx;
+                if (e["tile"]) {
+                    let tile = new Tile([eidx,ridx],e["tile"]);
+                    tile.render(r);
+                }
             });
         });
 
