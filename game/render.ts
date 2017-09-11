@@ -27,7 +27,8 @@ function draw_test(ctx) {
 
 export function init_3d(): Renderer {
     const ctx = new three.WebGLRenderer({antialias:true, alpha:true});
-    document.body.appendChild(ctx.domElement);
+    let canvas_ele = document.getElementById("canvas");
+    canvas_ele.appendChild(ctx.domElement);
 
     const WIDTH = window.innerWidth;
     const HEIGHT = window.innerHeight;
@@ -60,7 +61,7 @@ export function init_3d(): Renderer {
     camera.position.x= 10;
     camera.position.z = 10;
     camera.lookAt(new three.Vector3(0,0,0));
-
+    
     return new Renderer(ctx,scene,camera);
 }
 
