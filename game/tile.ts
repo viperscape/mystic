@@ -1,6 +1,8 @@
 import {Renderer,Renderable} from "./render";
 import Three = require("three");
 
+const SIZE: number = 1;
+
 export class Tile {
     kind: string;
     renderable: TileRenderable;
@@ -34,12 +36,12 @@ export class TileRenderable {
         else if (tile.kind == "stone-red") mat.color = stone_red;
         else mat.color = stone_generic;
 
-        let cube = new Three.BoxGeometry(1,0,1);
+        let cube = new Three.BoxGeometry(SIZE,0,SIZE);
         let material = new Three.MeshLambertMaterial(mat);
         this.mesh = new Three.Mesh(cube, material);
         this.mesh.position.x = tile.position[0];
         this.mesh.position.z = tile.position[1];
-
+        
         r.scene.add(this.mesh);
 
         let draw = (r: Renderer) => {

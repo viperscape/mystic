@@ -33,18 +33,3 @@ export class Move {
         let n = this.route.shift();
     }
 }
-
-// convert tile selection to coordinate
-export function to_coord (n:number, map: Map): [number,number] {
-    let coord;
-    map.layout.forEach((row, ridx) => {
-        row.forEach((_, eidx) => {
-            n -= 1;
-            if (n < 1) {
-                if (!coord) coord = [ridx,eidx];
-            }
-        });
-    });
-
-    return coord;
-}

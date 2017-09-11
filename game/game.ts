@@ -14,12 +14,18 @@ export function run(target_gui) {
 
         let move = new Move(map.player.position, [0,3], map);
         
-        check_input(renderer, map);
+        let mesh: Three.Mesh[] = [];
+        map.tiles.forEach((e) => { mesh.push(e.renderable.mesh) });
+
+        let cb = (v: Three.Vector3) => {
+            console.log(v);
+        };
+        check_input(renderer, mesh, cb);
         check_resize(renderer);
     });
 }
 
-function check_input (r: render.Renderer, map: Map) {
+function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vector3) => void) {
     document.addEventListener('mousedown', onMouseDown, false);
     function onMouseDown(event) {
         //event.preventDefault(); // ??
@@ -29,12 +35,10 @@ function check_input (r: render.Renderer, map: Map) {
         mouse.x = ( event.clientX / r.ctx.domElement.clientWidth ) * 2 - 1;
         mouse.y = - ( event.clientY / r.ctx.domElement.clientHeight ) * 2 + 1;
         raycaster.setFromCamera( mouse, r.camera );
-        let objects: Three.Mesh[] = [];
-        map.tiles.forEach((e) => { objects.push(e.renderable.mesh) }); // TODO: track tiles, player, and items separately
 
-        let intersects = raycaster.intersectObjects( objects );
-        if ( intersects.length > 0 ) {
-            console.log("hit!");
+        let intersects = raycaster.intersectObjects(mesh);
+        if (intersects.length > 0) {
+            cb(intersects[0].object.getWorldPosition());
         }
     }
 }
