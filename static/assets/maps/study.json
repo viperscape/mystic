@@ -17,6 +17,7 @@
         {"tile":"stone-red"},
         {
             "entry": "stone-grey",
+            "tile":"stone-brown",
             "target": "The Library"
         },
         {

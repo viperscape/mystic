@@ -21,7 +21,8 @@
         {
             "id": 0,
             "entry": "stone-door",
-            "target": "The Study"
+            "target": "The Study",
+            "tile":"stone-grey"
         }
     ]
 }
