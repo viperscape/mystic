@@ -52,7 +52,7 @@ export class Move {
         });
         
         let tween = new Tween.Tween({x:this.current[0],z:this.current[1]})
-            .to({x:xs,z:zs}, 1000) //TODO: determine speed
+            .to({x:xs,z:zs}, this.route.length * 250) //TODO: determine speed
             .interpolation(Tween.Interpolation.Bezier)
             .onUpdate(steps.update)
             .onComplete(steps.final)
