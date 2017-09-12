@@ -12,12 +12,12 @@ export class Map {
     items: Items; // base game items loaded from storage
 
     tiles: Tile[];
-    objects: any[]; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
+    objects: {potions}; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
     player: Player;
 
     constructor (file:string, items?: Items) {
         this.layout = [];
-        this.objects = [];
+        this.objects = { potions: [] };
         this.tiles = [];
         this.items = items;
 
@@ -48,7 +48,7 @@ export class Map {
                             potion.renderable.rotate();
                         });
                         
-                        this.objects.push(potion);
+                        this.objects.potions.push(potion);
                     }
                 }
                 else if (e["entry"]) {

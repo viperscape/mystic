@@ -2,6 +2,7 @@ import {Items} from "./items";
 import {Renderable,Renderer} from "./render";
 import {Move} from "./move";
 import {Map} from "./map";
+import {Potion} from "./potion";
 
 import Three = require("three");
 import events = require("events");
@@ -46,12 +47,31 @@ export class Player {
                         this.renderable.position.x = pos.x;
                         this.renderable.position.z = pos.z;
 
-                        //update game position
+                        // update game position
                         let rpos:[number,number] = [
                             Math.round(pos.x),
                             Math.round(pos.z)
                         ];
                         this.position = rpos;
+
+                        // process pickups
+                        // TODO: move this out, it's going to get messy here
+                        var p;
+                        for (var i=0; i < this.map.objects.potions.length; i++) {
+                            if (!this.map.objects.potions[i].renderable) continue;
+                            let pos = [this.map.objects.potions[i].renderable.position.x,
+                                this.map.objects.potions[i].renderable.position.z];
+                            
+                            if ((this.position[0] == pos[0]) && (this.position[1] == pos[1])) {
+                                console.log("potion tag", this.map.objects.potions[i])
+                                p = this.map.objects.potions.splice(i,1);
+                                break;
+                            }
+                        }
+                        if (p) {
+                            p.renderable.stop();
+                            this.items.potions.push(p);
+                        }
                     },
                     final: () => { this.renderable.draw_position() }
                 });
