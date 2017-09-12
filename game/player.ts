@@ -29,9 +29,17 @@ export class Player {
         ev.on("input", (e) => {
             if (e.tile) { // player selects a tile?
                 if (!this.map) return;
-
-                this.move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
-                let tween: Tween = this.move.render({
+                if (this.move) { 
+                    this.move.tween.stop();
+                    let rpos:[number,number] = [
+                        Math.round(this.position[0]),
+                        Math.round(this.position[1])
+                    ];
+                    this.move = new Move(rpos, [e.tile.x,e.tile.z], this.map, this.position);
+                }
+                else this.move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
+                
+                this.move.render({
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
                         this.renderable.position.x = pos.x;
@@ -43,7 +51,7 @@ export class Player {
                     final: () => { this.renderable.draw_position() }
                 });
 
-                this.renderable.draw_tween(tween);
+                this.renderable.draw_tween(this.move.tween);
             }
         });
     }

@@ -7,8 +7,10 @@ import Tween = require("@tweenjs/tween.js");
 export class Move {
     route: [[number,number]]; //start to finish list of tiles
     current: [number,number];
+    tween: Tween.Tween;
 
-    constructor (from: [number,number], to: [number,number], map: Map) {
+    // optionally use a decimal for tween start
+    constructor (from: [number,number], to: [number,number], map: Map, current?: [number,number]) {
         this.route = [] as [[number,number]];
         this.route.push(from);
 
@@ -33,6 +35,7 @@ export class Move {
         });
         
         this.current = this.route.shift();
+        if (current) this.current = current;
     }
 
     // performs tweening
@@ -49,14 +52,12 @@ export class Move {
             zs.push(e[1]);
         });
         
-        let tween = new Tween.Tween({x:this.current[0],z:this.current[1]})
+        this.tween = new Tween.Tween({x:this.current[0],z:this.current[1]})
             .to({x:xs,z:zs}, this.route.length * 250) //TODO: determine speed
             .interpolation(Tween.Interpolation.CatmullRom)
             .onUpdate(steps.update)
             .onComplete(steps.final)
             .start();
-
-        return tween;
     }
 
 
