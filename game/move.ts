@@ -38,15 +38,27 @@ export class Move {
     }
 
     // performs tweening
-    render (r: Renderer, cb: (pos: [number,number]) => void): Tween.Tween {        
+    render (steps: {
+        renderer: Renderer, 
+        update: (pos: [number,number]) => void,
+        next: (tween_: Tween.Tween) => void,
+        final: () => void
+        }): Tween.Tween {
+
         var n = this.route.shift();
         if (!n) return;
         
         let tween = new Tween.Tween(this.current)
             .to(n, 1000) //TODO: determine speed
             //.easing(Tween.Easing.Quadratic.Out)
-            .onUpdate(function(pos) { console.log(pos); cb(pos) })
-            .onComplete(() => { this.render(r,cb) })
+            .onUpdate(steps.update)
+            .onComplete(() => {
+                if (this.route.length > 0) {
+                    let tween_ = this.render(steps);
+                    steps.next(tween_);
+                }
+                else steps.final()
+            })
             .start();
 
         return tween;
