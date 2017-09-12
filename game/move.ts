@@ -44,8 +44,6 @@ export class Move {
         final: () => void
         }): Tween.Tween {
 
-        //var n = this.route.shift();
-        //if (!n) return;
         let xs = [];
         let zs = [];
         this.route.forEach((e) => {
