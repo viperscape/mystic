@@ -47,7 +47,6 @@ export class Player {
                         this.renderable.position.z = pos.z;
 
                         //update game position
-                        // TODO: use proper values (-0.5 to 0.5 = 0, etc)
                         let rpos:[number,number] = [
                             Math.round(pos.x),
                             Math.round(pos.z)
