@@ -4,14 +4,17 @@ import {Move} from "./move";
 import {Map} from "./map";
 
 import Three = require("three");
-import events = require('events');
+import events = require("events");
+import {Tween} from "@tweenjs/tween.js";
 
 export class Player {
     items: Items;
     attributes: Attributes;
     renderable: PlayerRenderable;
     position: [number,number]; //tile position
+
     map: Map;
+    move: Move;
 
     constructor() {
         this.items = new Items;
@@ -26,8 +29,15 @@ export class Player {
         ev.on("input", (e) => {
             if (e.tile) { // player selects a tile?
                 if (!this.map) return;
-                
-                let move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
+
+                this.move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
+                let tween: Tween = this.move.render(this.renderable.renderable.renderer, 
+                    (pos: [number,number])=> {
+                        this.renderable.position.x = pos[0];
+                        this.renderable.position.z = pos[1];
+                });
+
+                this.renderable.draw_tween(tween);
             }
         });
     }
@@ -65,15 +75,28 @@ export class PlayerRenderable {
             this.mesh = new Three.Mesh(geometry, material);
             this.position = {x:0,y:0,z:0};
             r.scene.add(this.mesh);
-    
-            let draw = (r: Renderer) => {
-                this.mesh.position.x = this.position.x;
-                this.mesh.position.y = this.position.y;
-                this.mesh.position.z = this.position.z;
-            };
-    
-            this.renderable = r.new(draw);
+            this.renderable = r.new(function(){});
+            this.draw_position();
+            
             if (cb) cb();
         });
+    }
+
+    draw_position () {
+        this.renderable.fn = (_: Renderer) => {
+            this.mesh.position.x = this.position.x;
+            this.mesh.position.y = this.position.y;
+            this.mesh.position.z = this.position.z;
+        };
+    }
+
+    draw_tween (tween:Tween) {
+        this.renderable.fn = (r: Renderer) => {
+            this.mesh.position.x = this.position.x;
+            this.mesh.position.y = this.position.y;
+            this.mesh.position.z = this.position.z;
+
+            tween.update(r.clock);
+        };
     }
 }

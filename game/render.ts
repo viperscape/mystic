@@ -92,11 +92,13 @@ export class Renderer {
 
 export class Renderable {
     id: number;
+    renderer: Renderer; // we can use this later for tweens, etc.
     fn: (r:Renderer) => void;
 
     constructor (r:Renderer, fn: (r:Renderer) => void) {
         this.fn = fn;
-        
+        this.renderer = r;
+
         let render = () => {
             this.id = requestAnimationFrame(render);  
             this.fn(r);

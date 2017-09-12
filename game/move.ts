@@ -1,13 +1,19 @@
 import {Map} from "./map";
+import {Renderer} from "./render";
+
 import astar = require("javascript-astar");
+import Tween = require("@tweenjs/tween.js");
 
 export class Move {
     route: [[number,number]]; //start to finish list of tiles
+    current: [number,number];
     tile_cost: number; // cost of the current tile, to move from
     route_cost: number;
 
     constructor (from: [number,number], to: [number,number], map: Map) {
         this.route = [] as [[number,number]];
+        this.route.push(from);
+
         let layout = [];
         map.layout.forEach((row, ridx) => {
             let row_ = [];
@@ -27,9 +33,24 @@ export class Move {
         r.forEach(e => {
             this.route.push([e.x,e.y]);
         });
+        
+        this.current = this.route.shift();
     }
 
-    next () {
-        let n = this.route.shift();
+    // performs tweening
+    render (r: Renderer, cb: (pos: [number,number]) => void): Tween.Tween {        
+        var n = this.route.shift();
+        if (!n) return;
+        
+        let tween = new Tween.Tween(this.current)
+            .to(n, 1000) //TODO: determine speed
+            //.easing(Tween.Easing.Quadratic.Out)
+            .onUpdate((pos) => { console.log(pos); cb(pos) })
+            .onComplete(() => { this.render(r,cb) })
+            .start();
+
+        return tween;
     }
+
+
 }
