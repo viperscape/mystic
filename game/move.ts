@@ -6,11 +6,11 @@ import Tween = require("@tweenjs/tween.js");
 
 export class Move {
     route: [[number,number]]; //start to finish list of tiles
-    current: [number,number];
+    current: {x,z};
     tween: Tween.Tween;
 
     // optionally use a decimal for tween start
-    constructor (from: [number,number], to: [number,number], map: Map, current?: [number,number]) {
+    constructor (from: [number,number], to: [number,number], map: Map, current?: {x,z}) {
         this.route = [] as [[number,number]];
         this.route.push(from);
 
@@ -34,7 +34,8 @@ export class Move {
             this.route.push([e.x,e.y]);
         });
         
-        this.current = this.route.shift();
+        this.route.shift(); //remove first
+        this.current = {x:from[0],z:from[1]};
         if (current) this.current = current;
     }
 
@@ -52,7 +53,7 @@ export class Move {
             zs.push(e[1]);
         });
         
-        this.tween = new Tween.Tween({x:this.current[0],z:this.current[1]})
+        this.tween = new Tween.Tween(this.current)
             .to({x:xs,z:zs}, this.route.length * 250) //TODO: determine speed
             .interpolation(Tween.Interpolation.CatmullRom)
             .onUpdate(steps.update)

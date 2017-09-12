@@ -31,14 +31,15 @@ export class Player {
                 if (!this.map) return;
                 if (this.move) { 
                     this.move.tween.stop();
-                    let rpos:[number,number] = [
-                        Math.round(this.position[0]),
-                        Math.round(this.position[1])
-                    ];
-                    this.move = new Move(rpos, [e.tile.x,e.tile.z], this.map, this.position);
+                    this.move = new Move(
+                        this.position, 
+                        [e.tile.x,e.tile.z],
+                        this.map, 
+                        this.renderable.position
+                    );
                 }
                 else this.move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
-                
+
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
@@ -46,7 +47,12 @@ export class Player {
                         this.renderable.position.z = pos.z;
 
                         //update game position
-                        this.position = [pos.x,pos.z];
+                        // TODO: use proper values (-0.5 to 0.5 = 0, etc)
+                        let rpos:[number,number] = [
+                            Math.round(pos.x),
+                            Math.round(pos.z)
+                        ];
+                        this.position = rpos;
                     },
                     final: () => { this.renderable.draw_position() }
                 });
