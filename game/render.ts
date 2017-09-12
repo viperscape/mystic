@@ -1,7 +1,6 @@
 import pixi = require("pixi.js");
 import three = require("three");
 
-
 export function render (target_gui) {
     const WIDTH = window.innerWidth;
     const HEIGHT = window.innerHeight;
@@ -71,6 +70,7 @@ export class Renderer {
     camera;
     clock;
     delta;
+    time;
 
     constructor(ctx,scene,camera) {
         this.ctx = ctx;
@@ -78,11 +78,12 @@ export class Renderer {
         this.camera = camera;
         this.clock = new three.Clock();
 
-        let timer = () => {
+        let timer = (time) => {
             requestAnimationFrame(timer);
             this.delta = this.clock.getDelta();
+            this.time = time;
         };
-        timer(); 
+        requestAnimationFrame(timer);
     }
 
     new(fn: (r:Renderer) => void): Renderable {

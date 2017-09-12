@@ -45,7 +45,7 @@ export class Move {
         let tween = new Tween.Tween(this.current)
             .to(n, 1000) //TODO: determine speed
             //.easing(Tween.Easing.Quadratic.Out)
-            .onUpdate((pos) => { console.log(pos); cb(pos) })
+            .onUpdate(function(pos) { console.log(pos); cb(pos) })
             .onComplete(() => { this.render(r,cb) })
             .start();
 
