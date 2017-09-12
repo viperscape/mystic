@@ -96,7 +96,7 @@ export class PlayerRenderable {
             this.mesh.position.y = this.position.y;
             this.mesh.position.z = this.position.z;
 
-            tween.update(r.clock);
+            tween.update(r.time);
         };
     }
 }
