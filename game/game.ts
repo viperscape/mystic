@@ -2,25 +2,30 @@ import render = require("./render");
 import items = require("./items");
 import {Player} from "./player";
 import {Map} from "./map";
-import {Move} from "./move";
+
 import Three = require("three");
+import events = require('events');
 
 export function run(target_gui) {
+    let ev = new events();
+
     //render.render(target_gui);
     items.load(function (i) {
         let renderer = render.init_3d();
         let map = new Map("study.json", i);
         map.render(renderer);
+        map.player.handler(ev);
 
-        let move = new Move(map.player.position, [0,3], map);
-        
+        // check tile clicks
         let mesh: Three.Mesh[] = [];
         map.tiles.forEach((e) => { mesh.push(e.renderable.mesh) });
 
         let cb = (v: Three.Vector3) => {
-            console.log(v);
+            ev.emit("input",{tile:v});
         };
         check_input(renderer, mesh, cb);
+        //
+
         check_resize(renderer);
     });
 }

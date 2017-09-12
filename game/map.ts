@@ -71,6 +71,7 @@ export class Map {
                 else if (e["spawn"]) {
                     if (e["spawn"] == "player") {
                         this.player = new Player();
+                        this.player.map = this;
                         this.player.position = [eidx,ridx];
                         this.player.render(r,() => {
                             this.player.renderable.position = { x: eidx, z: ridx, y: 0 };

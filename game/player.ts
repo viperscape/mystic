@@ -1,12 +1,17 @@
 import {Items} from "./items";
 import {Renderable,Renderer} from "./render";
+import {Move} from "./move";
+import {Map} from "./map";
+
 import Three = require("three");
+import events = require('events');
 
 export class Player {
     items: Items;
     attributes: Attributes;
     renderable: PlayerRenderable;
     position: [number,number]; //tile position
+    map: Map;
 
     constructor() {
         this.items = new Items;
@@ -15,6 +20,16 @@ export class Player {
 
     render(r:Renderer, cb?: () => void) {
         this.renderable = new PlayerRenderable(r,this,cb);
+    }
+
+    handler(ev: events) {
+        ev.on("input", (e) => {
+            if (e.tile) { // player selects a tile?
+                if (!this.map) return;
+                
+                let move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
+            }
+        });
     }
 }
 
