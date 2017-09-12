@@ -7,8 +7,6 @@ import Tween = require("@tweenjs/tween.js");
 export class Move {
     route: [[number,number]]; //start to finish list of tiles
     current: [number,number];
-    tile_cost: number; // cost of the current tile, to move from
-    route_cost: number;
 
     constructor (from: [number,number], to: [number,number], map: Map) {
         this.route = [] as [[number,number]];
