@@ -40,25 +40,24 @@ export class Move {
     // performs tweening
     render (steps: {
         renderer: Renderer, 
-        update: (pos: [number,number]) => void,
-        next: (tween_: Tween.Tween) => void,
+        update: (pos: {x,z}) => void,
         final: () => void
         }): Tween.Tween {
 
-        var n = this.route.shift();
-        if (!n) return;
+        //var n = this.route.shift();
+        //if (!n) return;
+        let xs = [];
+        let zs = [];
+        this.route.forEach((e) => {
+            xs.push(e[0]);
+            zs.push(e[1]);
+        });
         
-        let tween = new Tween.Tween(this.current)
-            .to(n, 1000) //TODO: determine speed
-            //.easing(Tween.Easing.Quadratic.Out)
+        let tween = new Tween.Tween({x:this.current[0],z:this.current[1]})
+            .to({x:xs,z:zs}, 1000) //TODO: determine speed
+            .interpolation(Tween.Interpolation.Bezier)
             .onUpdate(steps.update)
-            .onComplete(() => {
-                if (this.route.length > 0) {
-                    let tween_ = this.render(steps);
-                    steps.next(tween_);
-                }
-                else steps.final()
-            })
+            .onComplete(steps.final)
             .start();
 
         return tween;

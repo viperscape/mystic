@@ -33,11 +33,13 @@ export class Player {
                 this.move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
                 let tween: Tween = this.move.render({
                     renderer: this.renderable.renderable.renderer, 
-                    update: (pos: [number,number]) => {
-                        this.renderable.position.x = pos[0];
-                        this.renderable.position.z = pos[1];
+                    update: (pos: {x,z}) => {
+                        this.renderable.position.x = pos.x;
+                        this.renderable.position.z = pos.z;
+
+                        //update game position
+                        this.position = [pos.x,pos.z];
                     },
-                    next: (tween_) => {this.renderable.draw_tween(tween_)},
                     final: () => { this.renderable.draw_position() }
                 });
 
