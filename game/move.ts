@@ -25,7 +25,7 @@ export class Move {
             layout.push(row_);
         });
 
-        let g = new astar.Graph(layout);
+        let g = new astar.Graph(layout, { diagonal: true });
         let s = g.grid[from[0]][from[1]];
         let e = g.grid[to[0]][to[1]];
 
@@ -53,7 +53,7 @@ export class Move {
         
         let tween = new Tween.Tween({x:this.current[0],z:this.current[1]})
             .to({x:xs,z:zs}, this.route.length * 250) //TODO: determine speed
-            .interpolation(Tween.Interpolation.Bezier)
+            .interpolation(Tween.Interpolation.CatmullRom)
             .onUpdate(steps.update)
             .onComplete(steps.final)
             .start();
