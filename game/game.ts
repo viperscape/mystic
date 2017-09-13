@@ -45,6 +45,7 @@ export class Game {
             check_resize(this.renderer);
         });
 
+        // TODO: move this gui/dom stuff out to a module
         this.ev.on("gui", (data) => {
             if (data.toggle) {
                 let node = document.getElementById(data.toggle);
