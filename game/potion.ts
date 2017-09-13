@@ -112,6 +112,10 @@ export class PotionRenderable {
         if (cb) cb();
     }
 
+    stop () {
+        this.renderable.stop(this.mesh);
+    }
+
     rotate () {
         if (!this.renderable) return;
 

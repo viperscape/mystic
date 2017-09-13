@@ -56,21 +56,18 @@ export class Player {
 
                         // process pickups
                         // TODO: move this out, it's going to get messy here
-                        var p;
                         for (var i=0; i < this.map.objects.potions.length; i++) {
                             if (!this.map.objects.potions[i].renderable) continue;
                             let pos = [this.map.objects.potions[i].renderable.position.x,
                                 this.map.objects.potions[i].renderable.position.z];
                             
                             if ((this.position[0] == pos[0]) && (this.position[1] == pos[1])) {
-                                console.log("potion tag", this.map.objects.potions[i])
-                                p = this.map.objects.potions.splice(i,1);
+                                let p = this.map.objects.potions.splice(i,1)[0];
+                                p.renderable.stop();
+                                this.items.potions.push(p);
+
                                 break;
                             }
-                        }
-                        if (p) {
-                            p.renderable.stop();
-                            this.items.potions.push(p);
                         }
                     },
                     final: () => { this.renderable.draw_position() }
