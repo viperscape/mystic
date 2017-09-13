@@ -120,6 +120,7 @@ export class PlayerRenderable {
             this.mesh.position.y = this.position.y;
             this.mesh.position.z = this.position.z;
 
+            r.camera.lookAt(this.mesh.position);
             tween.update(r.time);
         };
     }
