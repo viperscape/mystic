@@ -40,7 +40,7 @@ export class Map {
                     let p = this.items.find("potion",{kind:e["potion"]});
                     if (p.length > 0) {
                         var rand = Math.floor(Math.random()*p.length);
-                        potion.from(p[rand]);
+                        potion.from(p[rand]); // pick random of kind
                         
                         potion.renderable = this.items.potion_models[potion.kind].clone();
                         potion.renderable.build(r, () => {
