@@ -19,9 +19,8 @@
             "potion":"berzerk"
         },
         {
-            "id": 0,
             "entry": "stone-door",
-            "target": "The Study",
+            "target": "study",
             "tile":"stone-grey"
         }
     ]

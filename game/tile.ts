@@ -50,4 +50,8 @@ export class TileRenderable {
         this.renderable = r.new(draw);
         if (cb) cb();
     }
+
+    stop() {
+        this.renderable.stop(this.mesh);
+    }
 }

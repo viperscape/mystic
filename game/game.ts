@@ -12,9 +12,14 @@ export function run(target_gui) {
     //render.render(target_gui);
     items.load(function (i) {
         let renderer = render.init_3d();
-        let map = new Map("study.json", i);
+        let map = new Map("study", i, ev);
         map.render(renderer);
         map.player.handler(ev);
+
+        ev.on("map", (m) => {
+            map = m; // update loaded map
+            map.render(renderer);
+        });
 
         // check tile clicks
         let mesh: Three.Mesh[] = [];

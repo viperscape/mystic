@@ -58,7 +58,10 @@ export class Player {
                         let p = this.map.pickup(this.position);
                         if (p) { this.items.potions.push(p); }
                     },
-                    final: () => { this.renderable.draw_position() }
+                    final: () => { 
+                        this.renderable.draw_position();
+                        this.map.zone(); // check zone entry
+                    }
                 });
 
                 this.renderable.draw_tween(this.move.tween);
