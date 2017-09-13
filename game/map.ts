@@ -71,7 +71,6 @@ export class Map {
                     let stone_brown = 0x4b331d;
                     let stone_grey = 0x424242;
 
-                    // TODO: figure out direction of door to line up with wall
                     var cube = new Three.BoxGeometry(0.25,2,1);
                     if (e["entry"] == "stone-grey") mat.color = stone_grey;
                     else mat.color = stone_brown;
@@ -79,9 +78,20 @@ export class Map {
                     var material = new Three.MeshLambertMaterial(mat);
                     var mesh = new Three.Mesh(cube, material);
                     r.scene.add(mesh);
-                    mesh.position.x = eidx-0.5;
+
+                    if (eidx == 0) mesh.position.x = eidx-0.5;
+                    else if (eidx == row.length-1) mesh.position.x = eidx+0.5;
+                    else mesh.position.x = eidx;
+
+                    mesh.rotation.y = Math.PI / 2;
+                    if (ridx == 0) mesh.position.z = ridx-0.5;
+                    else if (ridx == row.length-1) mesh.position.z = ridx+0.5;
+                    else {
+                        mesh.position.z = ridx;
+                        mesh.rotation.y = 0;
+                    }
+
                     mesh.position.y += 1;
-                    mesh.position.z = ridx;
 
                     this.zones.push({ 
                         grid: [eidx,ridx], 
