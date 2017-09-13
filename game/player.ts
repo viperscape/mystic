@@ -54,21 +54,9 @@ export class Player {
                         ];
                         this.position = rpos;
 
-                        // process pickups
-                        // TODO: move this out, it's going to get messy here
-                        for (var i=0; i < this.map.objects.potions.length; i++) {
-                            if (!this.map.objects.potions[i].renderable) continue;
-                            let pos = [this.map.objects.potions[i].renderable.position.x,
-                                this.map.objects.potions[i].renderable.position.z];
-                            
-                            if ((this.position[0] == pos[0]) && (this.position[1] == pos[1])) {
-                                let p = this.map.objects.potions.splice(i,1)[0];
-                                p.renderable.stop();
-                                this.items.potions.push(p);
-
-                                break;
-                            }
-                        }
+                        // TODO: process more than just potions, find a way to make ts happy
+                        let p = this.map.pickup(this.position);
+                        if (p) { this.items.potions.push(p); }
                     },
                     final: () => { this.renderable.draw_position() }
                 });

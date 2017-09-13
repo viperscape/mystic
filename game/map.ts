@@ -94,4 +94,20 @@ export class Map {
 
         this.renderable = r.new(draw);
     }
+
+
+    // NOTE: only processes potion pickups right now
+    pickup (position: [number,number]): any {
+        for (var i=0; i < this.objects.potions.length; i++) {
+            if (!this.objects.potions[i].renderable) continue;
+            let pos = [this.objects.potions[i].renderable.position.x,
+                this.objects.potions[i].renderable.position.z];
+            
+            if ((position[0] == pos[0]) && (position[1] == pos[1])) {
+                let p = this.objects.potions.splice(i,1)[0];
+                p.renderable.stop();
+                return p;
+            }
+        }
+    }
 }
