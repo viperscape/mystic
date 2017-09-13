@@ -10,9 +10,12 @@ export class Game {
     ev: events;
     renderer: render.Renderer;
     map: Map;
+    target_gui: string;
 
     constructor(target_gui) {
+        this.target_gui = target_gui;
         this.ev = new events();
+
         items.load((i) => {
             this.renderer = render.init_3d();
             this.map = new Map("study", i, this.ev);
@@ -26,6 +29,7 @@ export class Game {
                 if (cb) cb();
 
                 m.player.renderable.lookAt();
+                this.console_append("Now entering the area "+m.name);
             });
 
             // check tile clicks
@@ -39,18 +43,31 @@ export class Game {
             //
 
             check_resize(this.renderer);
-
-            this.ev.on("gui", (data) => {
-                if (data.toggle) {
-                    if (data.toggle == "console") {
-                        if (document.getElementById(data.toggle).style.display == '') {
-                            document.getElementById(data.toggle).style.display = 'none';
-                        } 
-                        else document.getElementById(data.toggle).style.display = '';
-                    }
-                }
-            });
         });
+
+        this.ev.on("gui", (data) => {
+            if (data.toggle) {
+                let node = document.getElementById(data.toggle);
+                if (node.style.display == '') node.style.display = 'none'
+                else node.style.display = '';
+            }
+        });
+
+        this.ev.on("console", (msg) => {
+            this.console_append(msg);
+        });
+    }
+
+    console_append(s: string) {
+        let console = document.getElementById("console");
+        let node = document.createElement("div");
+        node.appendChild(document.createTextNode(s));
+
+        console.appendChild(node);
+
+        if (console.childNodes.length > 5) {
+            console.removeChild(console.firstChild);
+        }
     }
 }
 
