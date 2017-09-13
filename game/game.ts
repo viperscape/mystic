@@ -6,37 +6,52 @@ import {Map} from "./map";
 import Three = require("three");
 import events = require('events');
 
-export function run(target_gui) {
-    let ev = new events();
+export class Game {
+    ev: events;
+    renderer: render.Renderer;
+    map: Map;
 
-    //render.render(target_gui);
-    items.load(function (i) {
-        let renderer = render.init_3d();
-        let map = new Map("study", i, ev);
-        map.render(renderer);
-        map.player.handler(ev);
+    constructor(target_gui) {
+        this.ev = new events();
+        items.load((i) => {
+            this.renderer = render.init_3d();
+            this.map = new Map("study", i, this.ev);
+            this.map.render(this.renderer);
+            this.map.player.handler(this.ev);
 
-        ev.on("map", (m, cb?) => {
-            map = m; // update loaded map
-            map.render(renderer);
+            this.ev.on("map", (m, cb?) => {
+                this.map = m; // update loaded map
+                this.map.render(this.renderer);
 
-            if (cb) cb();
+                if (cb) cb();
 
-            m.player.renderable.lookAt();
+                m.player.renderable.lookAt();
+            });
+
+            // check tile clicks
+            let mesh: Three.Mesh[] = [];
+            this.map.tiles.forEach((e) => { mesh.push(e.renderable.mesh) });
+
+            let cb = (v: Three.Vector3) => {
+                this.ev.emit("input",{tile:v});
+            };
+            check_input(this.renderer, mesh, cb);
+            //
+
+            check_resize(this.renderer);
+
+            this.ev.on("gui", (data) => {
+                if (data.toggle) {
+                    if (data.toggle == "console") {
+                        if (document.getElementById(data.toggle).style.display == '') {
+                            document.getElementById(data.toggle).style.display = 'none';
+                        } 
+                        else document.getElementById(data.toggle).style.display = '';
+                    }
+                }
+            });
         });
-
-        // check tile clicks
-        let mesh: Three.Mesh[] = [];
-        map.tiles.forEach((e) => { mesh.push(e.renderable.mesh) });
-
-        let cb = (v: Three.Vector3) => {
-            ev.emit("input",{tile:v});
-        };
-        check_input(renderer, mesh, cb);
-        //
-
-        check_resize(renderer);
-    });
+    }
 }
 
 function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vector3) => void) {

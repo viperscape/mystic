@@ -12,11 +12,14 @@
   
     <body>
       <div id="canvas" style="position: absolute;top:0px;left:0px;"></div>
-      <div id="gui" style="position: absolute"></div>
+      <div id="gui" style="position: absolute">
+        <a href="#" onclick="game.ev.emit('gui', {toggle:'console'})"> > </a>
+        <div id="console"></div>
+      </div>
     </body>
 
     <script>
-      const game = require('./game/game.js');
-      game.run("gui")
+      const Game = require('./game/game.js');
+      const game = new Game.Game("gui");
     </script>
 </html>
