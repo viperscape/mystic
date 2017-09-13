@@ -94,7 +94,7 @@ export class Renderer {
 export class Renderable {
     id: number;
     renderer: Renderer; // we can use this later for tweens, etc.
-    fn: (r:Renderer) => void;
+    fn: (r:Renderer) => void; // NOTE: this may become a map of functions to iterate
 
     constructor (r:Renderer, fn: (r:Renderer) => void) {
         this.fn = fn;
