@@ -1,5 +1,5 @@
 import pixi = require("pixi.js");
-import three = require("three");
+import Three = require("three");
 
 export function render (target_gui) {
     const WIDTH = window.innerWidth;
@@ -25,7 +25,7 @@ function draw_test(ctx) {
 }
 
 export function init_3d(): Renderer {
-    const ctx = new three.WebGLRenderer({antialias:true, alpha:true});
+    const ctx = new Three.WebGLRenderer({antialias:true, alpha:true});
     let canvas_ele = document.getElementById("canvas");
     canvas_ele.appendChild(ctx.domElement);
 
@@ -39,17 +39,17 @@ export function init_3d(): Renderer {
 
     
     const camera =
-        new three.PerspectiveCamera(
+        new Three.PerspectiveCamera(
             VIEW_ANGLE,
             ASPECT,
             NEAR,
             FAR
         );
     
-    const scene = new three.Scene();
-    scene.background = new three.Color( 0x222222 );
+    const scene = new Three.Scene();
+    scene.background = new Three.Color( 0x222222 );
 
-    scene.add(new three.AmbientLight(0xffffff));
+    scene.add(new Three.AmbientLight(0xffffff));
     
     scene.add(camera);
     ctx.setSize(WIDTH, HEIGHT);
@@ -59,7 +59,7 @@ export function init_3d(): Renderer {
     camera.position.y = 10;
     camera.position.x= 10;
     camera.position.z = 10;
-    camera.lookAt(new three.Vector3(0,0,0));
+    camera.lookAt(new Three.Vector3(0,0,0));
     
     return new Renderer(ctx,scene,camera);
 }
@@ -76,7 +76,7 @@ export class Renderer {
         this.ctx = ctx;
         this.scene = scene;
         this.camera = camera;
-        this.clock = new three.Clock();
+        this.clock = new Three.Clock();
 
         let timer = (time) => {
             requestAnimationFrame(timer);
@@ -107,5 +107,10 @@ export class Renderable {
         };
         render();
     }
-    stop() { if (this.id.constructor == Number) cancelAnimationFrame(this.id); }
+    stop(obj: Three.Mesh) { 
+        if (this.id.constructor == Number) {
+            cancelAnimationFrame(this.id);
+            this.renderer.scene.remove(obj);
+        }
+    }
 }
