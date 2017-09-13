@@ -1,7 +1,7 @@
 {
     "potions": [
         {
-            "name": "poldark",
+            "name": "Poldark",
             "kind": "elixer",
             "debuff": {
                 "time": 60,
@@ -11,7 +11,7 @@
             "stamina": 10
         },
         {
-            "name": "fang",
+            "name": "Fang",
             "kind": "berzerk",
             "stamina": 20,
             "strength": 15,
@@ -20,7 +20,7 @@
             }
         },
         {
-            "name": "penumbra",
+            "name": "Penumbra",
             "kind": "mindful",
             "concentration": -5,
             "insight": -5,
@@ -29,7 +29,7 @@
             }
         },
         {
-            "name": "ginko",
+            "name": "Ginko",
             "kind": "mindful",
             "concentration": 5,
             "insight": 5,
