@@ -16,9 +16,13 @@ export function run(target_gui) {
         map.render(renderer);
         map.player.handler(ev);
 
-        ev.on("map", (m) => {
+        ev.on("map", (m, cb?) => {
             map = m; // update loaded map
             map.render(renderer);
+
+            if (cb) cb();
+
+            m.player.renderable.lookAt();
         });
 
         // check tile clicks

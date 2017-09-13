@@ -12,7 +12,7 @@ export class Player {
     items: Items;
     attributes: Attributes;
     renderable: PlayerRenderable;
-    position: [number,number]; //tile position
+    protected position: [number,number]; //tile position
 
     map: Map;
     move: Move;
@@ -44,15 +44,7 @@ export class Player {
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
-                        this.renderable.position.x = pos.x;
-                        this.renderable.position.z = pos.z;
-
-                        // update game position
-                        let rpos:[number,number] = [
-                            Math.round(pos.x),
-                            Math.round(pos.z)
-                        ];
-                        this.position = rpos;
+                        this.position_set(pos);
 
                         // TODO: process more than just potions, find a way to make ts happy
                         let p = this.map.pickup(this.position);
@@ -67,6 +59,22 @@ export class Player {
                 this.renderable.draw_tween(this.move.tween);
             }
         });
+    }
+
+    // sets position of renderable and also grid position based on rounding
+    position_set (pos: {x,z}) {
+        this.renderable.position.x = pos.x;
+        this.renderable.position.z = pos.z;
+
+        // update game position
+        let rpos:[number,number] = [
+            Math.round(pos.x),
+            Math.round(pos.z)
+        ];
+        this.position = rpos;
+    }
+    position_get(): [number,number] {
+        return this.position
     }
 }
 
@@ -109,6 +117,10 @@ export class PlayerRenderable {
         });
     }
 
+    lookAt() {
+        this.renderable.renderer.camera.lookAt(this.position);
+    }
+
     draw_position () {
         this.renderable.fn = (_: Renderer) => {
             this.mesh.position.x = this.position.x;
@@ -123,7 +135,7 @@ export class PlayerRenderable {
             this.mesh.position.y = this.position.y;
             this.mesh.position.z = this.position.z;
 
-            r.camera.lookAt(this.mesh.position);
+            this.lookAt();
             tween.update(r.time);
         };
     }

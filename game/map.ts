@@ -9,6 +9,7 @@ import events = require("events");
 
 export class Map {
     name: string;
+    target_name: string;
     layout: any[];
     items: Items; // base game items loaded from storage
 
@@ -31,6 +32,7 @@ export class Map {
         this.items = items;
         this.zones = [] as [{ grid, target, mesh, id }];
         this.ev = ev;
+        this.target_name = file;
 
         let map = require("../assets/maps/"+file+".json");
         this.name = map["name"];
@@ -92,10 +94,10 @@ export class Map {
                     if ((e["spawn"] == "player") && (!this.player)) {
                         this.player = new Player();
                         this.player.map = this;
-                        this.player.position = [eidx,ridx];
+                        
                         this.player.render(r,() => {
-                            this.player.renderable.position = { x: eidx, z: ridx, y: 0 };
-                            r.camera.lookAt(new Three.Vector3(eidx,0,ridx));
+                            this.player.position_set({ x: eidx, z: ridx});
+                            this.player.renderable.lookAt();
                         });
                     }
                 }
@@ -128,14 +130,24 @@ export class Map {
     // check if at zone entry/exit, reload new map if so
     zone () {
         for (var i in this.zones) {
-            if (on_same_tile(this.zones[i].grid, this.player.position)) {
+            if (on_same_tile(this.zones[i].grid, this.player.position_get())) {
                 let m = new Map(this.zones[i].target, this.items, this.ev);
                 m.player = this.player;
                 this.player.map = m;
 
                 this.stop();
                 if (this.ev) {
-                    this.ev.emit("map", m);
+                    this.ev.emit("map", m, () => {
+                        // find back zone and position player
+                        for (var i in m.zones) {
+                            if (m.zones[i].target == this.target_name) {
+                                this.player.position_set({
+                                    x:m.zones[i].grid[0], 
+                                    z:m.zones[i].grid[1]
+                                })
+                            }
+                        }
+                    });
                 }
 
                 break
