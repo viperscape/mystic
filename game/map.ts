@@ -12,6 +12,7 @@ export class Map {
     target_name: string;
     layout: any[];
     items: Items; // base game items loaded from storage
+    mesh: Three.Mesh; // terrain mesh
 
     tiles: Tile[];
     objects: {potions}; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
@@ -43,6 +44,18 @@ export class Map {
             });
             this.layout.push(row);
         });
+
+        let loader = new Three.JSONLoader();
+        loader.load('./assets/models/terrain.json', (geometry, materials) => {
+            this.mesh = new Three.Mesh(geometry, materials[0]);
+            this.renderer.scene.add(this.mesh);
+
+            let light = new Three.PointLight(0xffffff, 0.8, 100); 
+            light.position.set(0, 0, 100);
+            this.renderer.scene.add(light);
+        });
+
+        
     }
 
     render (r:Renderer) {

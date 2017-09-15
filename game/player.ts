@@ -17,9 +17,13 @@ export class Player {
     map: Map;
     move: Move;
 
+    raycaster: Three.Raycaster;
+
     constructor() {
         this.items = new Items;
         this.attributes = new Attributes;
+        
+        this.raycaster = new Three.Raycaster();
     }
 
     render(r:Renderer, cb?: () => void) {
@@ -52,6 +56,8 @@ export class Player {
                             this.items.potions.push(p); 
                             this.map.ev.emit("console", "Picked up potion "+p.name);
                         }
+
+                        this.snap_to_terrain();
                     },
                     final: () => { 
                         this.renderable.draw_position();
@@ -79,6 +85,15 @@ export class Player {
     position_get(): [number,number] {
         return this.position
     }
+
+    snap_to_terrain() {
+        this.raycaster.set(new Three.Vector3(this.renderable.position.x, this.renderable.position.y, this.renderable.position.z), 
+            new Three.Vector3(this.renderable.position.x, this.renderable.position.y-10, this.renderable.position.z));
+        let intersects = this.raycaster.intersectObjects([this.map.mesh]);
+        if (intersects.length > 0) {
+            this.renderable.position.y = intersects[0].point.y + 0.5;
+        }
+    }
 }
 
 export class Attributes {
@@ -105,13 +120,14 @@ export class PlayerRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
     position: {x:number, y:number, z:number};
+    
 
     constructor (r:Renderer, player: Player, cb?: () => void) {
         let loader = new Three.JSONLoader();
         loader.load('./assets/models/player.json', (geometry, materials) => {
             var material = materials[0];
             this.mesh = new Three.Mesh(geometry, material);
-            this.position = {x:0,y:0,z:0};
+            this.position = {x:0,y:3,z:0};
             r.scene.add(this.mesh);
             this.renderable = r.new(function(){});
             this.draw_position();
@@ -126,6 +142,8 @@ export class PlayerRenderable {
 
     draw_position () {
         this.renderable.fn = (_: Renderer) => {
+
+            
             this.mesh.position.x = this.position.x;
             this.mesh.position.y = this.position.y;
             this.mesh.position.z = this.position.z;
