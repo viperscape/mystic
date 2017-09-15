@@ -18,6 +18,7 @@ export class Player {
     move: Move;
 
     raycaster: Three.Raycaster;
+    ev: events;
 
     constructor() {
         this.items = new Items;
@@ -31,19 +32,26 @@ export class Player {
     }
 
     handler(ev: events) {
+        if (!this.ev) this.ev = ev;
+
         ev.on("input", (e) => {
             if (e.tile) { // player selects a tile?
                 if (!this.map) return;
+                let rpos:[number,number] = [
+                    Math.round(e.tile.x),
+                    Math.round(e.tile.z)
+                ];
+
                 if (this.move) { 
                     this.move.tween.stop();
                     this.move = new Move(
                         this.position, 
-                        [e.tile.x,e.tile.z],
+                        rpos,
                         this.map, 
                         this.renderable.position
                     );
                 }
-                else this.move = new Move(this.position, [e.tile.x,e.tile.z], this.map);
+                else this.move = new Move(this.position, rpos, this.map);
 
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
@@ -87,11 +95,14 @@ export class Player {
     }
 
     snap_to_terrain() {
-        this.raycaster.set(new Three.Vector3(this.renderable.position.x, this.renderable.position.y, this.renderable.position.z), 
-            new Three.Vector3(this.renderable.position.x, this.renderable.position.y-10, this.renderable.position.z));
+        let origin = new Three.Vector3(this.renderable.position.x, this.renderable.position.y+0.5, this.renderable.position.z);
+        let  dir = new Three.Vector3(this.renderable.position.x, this.renderable.position.y-5, this.renderable.position.z);
+        dir = dir.sub(origin).normalize();
+        
+        this.raycaster.set(origin,dir);
         let intersects = this.raycaster.intersectObjects([this.map.mesh]);
         if (intersects.length > 0) {
-            this.renderable.position.y = intersects[0].point.y + 0.5;
+            this.renderable.position.y = intersects[0].point.y;
         }
     }
 }
@@ -127,7 +138,7 @@ export class PlayerRenderable {
         loader.load('./assets/models/player.json', (geometry, materials) => {
             var material = materials[0];
             this.mesh = new Three.Mesh(geometry, material);
-            this.position = {x:0,y:3,z:0};
+            this.position = {x:0,y:5,z:0};
             r.scene.add(this.mesh);
             this.renderable = r.new(function(){});
             this.draw_position();

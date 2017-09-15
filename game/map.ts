@@ -45,17 +45,6 @@ export class Map {
             this.layout.push(row);
         });
 
-        let loader = new Three.JSONLoader();
-        loader.load('./assets/models/terrain.json', (geometry, materials) => {
-            this.mesh = new Three.Mesh(geometry, materials[0]);
-            this.renderer.scene.add(this.mesh);
-
-            let light = new Three.PointLight(0xffffff, 0.8, 100); 
-            light.position.set(0, 0, 100);
-            this.renderer.scene.add(light);
-        });
-
-        
     }
 
     render (r:Renderer) {
@@ -120,6 +109,7 @@ export class Map {
                         
                         this.player.render(r,() => {
                             this.player.position_set({ x: eidx, z: ridx});
+                            //this.player.snap_to_terrain();
                             this.player.renderable.lookAt();
                         });
                     }
@@ -131,6 +121,18 @@ export class Map {
                     this.tiles.push(tile);
                 }
             });
+        });
+
+        let loader = new Three.JSONLoader();
+        loader.load('./assets/models/terrain.json', (geometry, materials) => {
+            this.mesh = new Three.Mesh(geometry, materials[0]);
+            this.renderer.scene.add(this.mesh);
+
+            let light = new Three.PointLight(0xffffff, 0.8, 100); 
+            light.position.set(0, 0, 100);
+            this.renderer.scene.add(light);
+
+            this.ev.emit("map", this);
         });
     }
 
@@ -156,7 +158,7 @@ export class Map {
             if (on_same_tile(this.zones[i].grid, this.player.position_get())) {
                 let m = new Map(this.zones[i].target, this.items, this.ev);
                 m.player = this.player;
-                this.player.map = m;
+                this.player.map = m; // update player map reference // NOTE: we should check that the ref is latest on change
 
                 this.stop();
                 if (this.ev) {

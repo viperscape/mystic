@@ -23,7 +23,7 @@
         "DbgName":"Material.002",
         "visible":true,
         "opacity":1,
-        "colorDiffuse":[0.64,0.64,0.64],
+        "colorDiffuse":[0.311913,0.381596,0.328568],
         "wireframe":false,
         "blending":1,
         "shading":"lambert"

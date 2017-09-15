@@ -20,27 +20,29 @@ export class Game {
             this.renderer = render.init_3d();
             this.map = new Map("study", i, this.ev);
             this.map.render(this.renderer);
-            this.map.player.handler(this.ev);
 
+            let input_handler_drop;
             this.ev.on("map", (m, cb?) => {
+                if (input_handler_drop) input_handler_drop(); // drop old input handler and setup new one
+
                 this.map = m; // update loaded map
-                this.map.render(this.renderer);
+                if (!this.map.mesh) { this.map.render(this.renderer) }
+                this.map.player.handler(this.ev);
 
                 if (cb) cb();
 
                 m.player.renderable.lookAt();
-                this.console_append("Now entering the area "+m.name);
+                this.console_append("Now entering the area "+m.name); // TODO: zone and render conflict on double emits
+
+                let emit = (v: Three.Vector3) => {
+                    this.ev.emit("input",{tile:v});
+                };
+                
+                if (this.map.mesh) {
+                    let mesh: Three.Mesh[] = [this.map.mesh];
+                    input_handler_drop = check_input(this.renderer, mesh, emit);
+                }
             });
-
-            // check tile clicks
-            let mesh: Three.Mesh[] = [];
-            this.map.tiles.forEach((e) => { mesh.push(e.renderable.mesh) });
-
-            let cb = (v: Three.Vector3) => {
-                this.ev.emit("input",{tile:v});
-            };
-            check_input(this.renderer, mesh, cb);
-            //
 
             check_resize(this.renderer);
         });
@@ -72,7 +74,7 @@ export class Game {
     }
 }
 
-function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vector3) => void) {
+function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vector3) => void): () => void {
     document.addEventListener('mousedown', onMouseDown, false);
     function onMouseDown(event) {
         //event.preventDefault(); // ??
@@ -85,10 +87,16 @@ function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vect
 
         let intersects = raycaster.intersectObjects(mesh);
         if (intersects.length > 0) {
-            cb(intersects[0].object.getWorldPosition());
+            cb(intersects[0].point);//.object.getWorldPosition());
         }
     }
+
+    return function() {
+        document.removeEventListener('mousedown', onMouseDown);
+    }
 }
+
+
 
 function check_resize(r: render.Renderer) {
     window.addEventListener( 'resize', onWindowResize, false );
