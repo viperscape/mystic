@@ -15,15 +15,15 @@ export class Move {
         this.route.push(from);
 
         let layout = [];
-        map.layout.forEach((row, ridx) => {
-            let row_ = [];
-            row.forEach((e, eidx) => {
-                // for now just push a regular/moveable tile
-                // TODO: evaluate whats on tile in map (monster, object) and add weighted value
-                row_.push(1); // 1 is accessible, 0 is not
-            });
-            layout.push(row_);
-        });
+        // TODO: build this on map load, then populate with dynamic obstacles
+        for (var ridx=0; ridx < 100; ridx++) {
+            let row = [];
+            for (var i=0; i < 100; i++) {
+                row.push(1);
+            }
+
+            layout.push(row);
+        }
 
         let g = new astar.Graph(layout, { diagonal: true });
         let s = g.grid[from[0]][from[1]];
