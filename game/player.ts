@@ -56,7 +56,6 @@ export class Player {
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
-                        //declare manually, TS is confused
                         let y = this.renderable.position.y;
                         let point = this.get_snap_height({x:pos.x, y, z:pos.z}, this.map.mesh);
                         
@@ -74,8 +73,6 @@ export class Player {
                             this.items.potions.push(p); 
                             this.map.ev.emit("console", "Picked up potion "+p.name);
                         }
-
-                        //this.snap_to_terrain();
                     },
                     final: () => { 
                         this.renderable.draw_position();
