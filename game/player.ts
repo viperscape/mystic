@@ -95,14 +95,18 @@ export class Player {
     }
 
     snap_to_terrain() {
-        let origin = new Three.Vector3(this.renderable.position.x, this.renderable.position.y+0.5, this.renderable.position.z);
-        let  dir = new Three.Vector3(this.renderable.position.x, this.renderable.position.y-5, this.renderable.position.z);
+        let origin = new Three.Vector3(this.renderable.position.x, this.renderable.position.y+1, this.renderable.position.z);
+        let  dir = new Three.Vector3(this.renderable.position.x, this.renderable.position.y-1, this.renderable.position.z);
         dir = dir.sub(origin).normalize();
-        
+
         this.raycaster.set(origin,dir);
         let intersects = this.raycaster.intersectObjects([this.map.mesh]);
         if (intersects.length > 0) {
-            this.renderable.position.y = intersects[0].point.y;
+            let y = intersects[0].point.y;
+            //if (y > 10) {
+                //if (Math.abs(y - this.renderable.position.y) < 2)
+                    this.renderable.position.y = y;
+            //}
         }
     }
 }
