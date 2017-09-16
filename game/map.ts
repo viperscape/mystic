@@ -108,7 +108,7 @@ export class Map {
                         this.player.map = this;
                         
                         this.player.render(r,() => {
-                            this.player.position_set({ x: eidx, z: ridx});
+                            this.player.position_set({ x: 10, z: 10});
                             this.player.renderable.lookAt();
                         });
                     }
