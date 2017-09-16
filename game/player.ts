@@ -56,7 +56,17 @@ export class Player {
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
-                        this.position_set(pos);
+                        //declare manually, TS is confused
+                        let y = this.renderable.position.y;
+                        let point = this.get_snap_height({x:pos.x, y, z:pos.z}, this.map.mesh);
+                        
+                        if (point) {
+                            if (point.y<5) this.position_set({x:point.x,z:point.z,y:point.y});
+                            else if (this.move) {
+                                this.move.tween.stop();
+                                this.move = null;
+                            }
+                        }
 
                         // TODO: process more than just potions, find a way to make ts happy
                         let p = this.map.pickup(this.position);
@@ -65,7 +75,7 @@ export class Player {
                             this.map.ev.emit("console", "Picked up potion "+p.name);
                         }
 
-                        this.snap_to_terrain();
+                        //this.snap_to_terrain();
                     },
                     final: () => { 
                         this.renderable.draw_position();
@@ -79,9 +89,10 @@ export class Player {
     }
 
     // sets position of renderable and also grid position based on rounding
-    position_set (pos: {x,z}) {
+    position_set (pos: {x,z, y?}) {
         this.renderable.position.x = pos.x;
         this.renderable.position.z = pos.z;
+        if (pos.y) this.renderable.position.y = pos.y;
 
         // update game position
         let rpos:[number,number] = [
@@ -94,19 +105,23 @@ export class Player {
         return this.position
     }
 
-    snap_to_terrain() {
-        let origin = new Three.Vector3(this.renderable.position.x, this.renderable.position.y+1, this.renderable.position.z);
-        let  dir = new Three.Vector3(this.renderable.position.x, this.renderable.position.y-1, this.renderable.position.z);
+    snap_to_terrain(point_?: Three.Vector3) {
+        let point;
+        if (!point_) { point = this.get_snap_height (this.renderable.position, this.map.mesh); }
+        else { point = point_ };
+
+        if (point) this.renderable.position.y = point.y;
+    }
+
+    get_snap_height(position: {x:number,y:number,z:number}, mesh: Three.Mesh): Three.Vector3 {
+        let origin = new Three.Vector3(position.x, position.y+1, position.z);
+        let dir = new Three.Vector3(position.x, position.y-1, position.z);
         dir = dir.sub(origin).normalize();
 
         this.raycaster.set(origin,dir);
-        let intersects = this.raycaster.intersectObjects([this.map.mesh]);
+        let intersects = this.raycaster.intersectObjects([mesh]);
         if (intersects.length > 0) {
-            let y = intersects[0].point.y;
-            //if (y > 10) {
-                //if (Math.abs(y - this.renderable.position.y) < 2)
-                    this.renderable.position.y = y;
-            //}
+            return intersects[0].point;
         }
     }
 }
@@ -157,8 +172,6 @@ export class PlayerRenderable {
 
     draw_position () {
         this.renderable.fn = (_: Renderer) => {
-
-            
             this.mesh.position.x = this.position.x;
             this.mesh.position.y = this.position.y;
             this.mesh.position.z = this.position.z;
