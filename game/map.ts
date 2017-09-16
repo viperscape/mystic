@@ -109,7 +109,6 @@ export class Map {
                         
                         this.player.render(r,() => {
                             this.player.position_set({ x: eidx, z: ridx});
-                            //this.player.snap_to_terrain();
                             this.player.renderable.lookAt();
                         });
                     }
@@ -131,6 +130,10 @@ export class Map {
             let light = new Three.PointLight(0xffffff, 0.8, 100); 
             light.position.set(0, 0, 100);
             this.renderer.scene.add(light);
+            
+            if (this.player) {
+                this.player.snap_to_terrain();
+            }
 
             this.ev.emit("map", this);
         });
