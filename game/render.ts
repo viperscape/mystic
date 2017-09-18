@@ -54,12 +54,6 @@ export function init_3d(): Renderer {
     scene.add(camera);
     ctx.setSize(WIDTH, HEIGHT);
     ctx.setPixelRatio( window.devicePixelRatio );
-
-    
-    camera.position.y = 10;
-    camera.position.x= 10;
-    camera.position.z = 10;
-    camera.lookAt(new Three.Vector3(0,0,0));
     
     return new Renderer(ctx,scene,camera);
 }

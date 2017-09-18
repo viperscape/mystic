@@ -8,6 +8,7 @@ import {Tile} from "./tile";
 import events = require("events");
 
 export class Map {
+    map: Object;
     name: string;
     target_name: string;
     layout: any[];
@@ -35,16 +36,8 @@ export class Map {
         this.ev = ev;
         this.target_name = file;
 
-        let map = require("../assets/maps/"+file+".json");
-        this.name = map["name"];
-        map["layout"].forEach(r => {
-            let row = [];
-            r.forEach(t => {
-                row.push(map["tiles"][t]);
-            });
-            this.layout.push(row);
-        });
-
+        this.map = require("../assets/maps/"+file+"-layout.json");
+        this.name = this.map["name"];
     }
 
     render (r:Renderer) {
@@ -102,28 +95,26 @@ export class Map {
                         mesh: mesh
                     });
                 }
-                else if (e["spawn"]) {
-                    if ((e["spawn"] == "player") && (!this.player)) {
-                        this.player = new Player();
-                        this.player.map = this;
-                        
-                        this.player.render(r,() => {
-                            this.player.position_set({ x: 10, z: 10});
-                            this.player.renderable.lookAt();
-                        });
-                    }
-                }
-
-                if (e["tile"]) {
-                    let tile = new Tile([eidx,ridx],e["tile"]);
-                    tile.render(r);
-                    this.tiles.push(tile);
-                }
             });
         });
 
+        if (this.map["spawn"]) {
+            this.map["spawn"].forEach(e => {
+                if ((e["player"]) && (!this.player)) {
+                    this.player = new Player();
+                    this.player.map = this;
+                    
+                    this.player.render(r,() => {
+                        let pos: number[] = e["player"].position;
+                        if (pos) this.player.position_set({x:pos[0],y:pos[1],z:pos[2]});
+                        this.player.renderable.lookAt();
+                    });
+                }
+            });
+        }
+
         let loader = new Three.JSONLoader();
-        loader.load('./assets/models/terrain.json', (geometry, materials) => {
+        loader.load("./assets/maps/"+this.target_name+".json", (geometry, materials) => {
             this.mesh = new Three.Mesh(geometry, materials[0]);
             this.renderer.scene.add(this.mesh);
 
@@ -157,7 +148,7 @@ export class Map {
 
     // check if at zone entry/exit, reload new map if so
     zone () {
-        for (var i in this.zones) {
+        /*for (var i in this.zones) {
             if (on_same_tile(this.zones[i].grid, this.player.position_get())) {
                 let m = new Map(this.zones[i].target, this.items, this.ev);
                 m.player = this.player;
@@ -180,7 +171,7 @@ export class Map {
 
                 break
             }
-        }
+        }*/
     }
 
     // stop all renderables

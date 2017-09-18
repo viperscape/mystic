@@ -18,7 +18,7 @@ export class Game {
 
         items.load((i) => {
             this.renderer = render.init_3d();
-            this.map = new Map("study", i, this.ev);
+            this.map = new Map("cavern", i, this.ev);
             this.map.render(this.renderer);
 
             let input_handler_drop;
@@ -35,7 +35,7 @@ export class Game {
                 this.console_append("Now entering the area "+m.name); // TODO: zone and render conflict on double emits
 
                 let emit = (v: Three.Vector3) => {
-                    this.ev.emit("input",{tile:v});
+                    this.ev.emit("input",{position:v});
                 };
                 
                 if (this.map.mesh) {
@@ -87,7 +87,8 @@ function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vect
 
         let intersects = raycaster.intersectObjects(mesh);
         if (intersects.length > 0) {
-            cb(intersects[0].point);//.object.getWorldPosition());
+            console.log("intersects",intersects[0].point)
+            cb(intersects[0].point)
         }
     }
 

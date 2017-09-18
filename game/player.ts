@@ -5,6 +5,7 @@ import {Map} from "./map";
 import {Potion} from "./potion";
 
 import Three = require("three");
+import {Vector3} from "three";
 import events = require("events");
 import {Tween} from "@tweenjs/tween.js";
 
@@ -12,7 +13,6 @@ export class Player {
     items: Items;
     attributes: Attributes;
     renderable: PlayerRenderable;
-    protected position: [number,number]; //tile position
 
     map: Map;
     move: Move;
@@ -35,29 +35,39 @@ export class Player {
         if (!this.ev) this.ev = ev;
 
         ev.on("input", (e) => {
-            if (e.tile) { // player selects a tile?
+            if (e.position) {
+                let player_pos = this.position_get();
+                let dist = e.position.sub(player_pos);
+                if ((Math.abs(dist.y) > 20) || 
+                    (Math.abs(dist.x) > 80) ||
+                    (Math.abs(dist.z) > 80)) { console.log("too far",dist); return }
+
                 if (!this.map) return;
-                let rpos:[number,number] = [
-                    Math.round(e.tile.x),
-                    Math.round(e.tile.z)
+                let tpos:[number,number] = [
+                    Math.round(e.position.x),
+                    Math.round(e.position.z)
+                ];
+                let fpos:[number,number] = [
+                    Math.round(player_pos.x),
+                    Math.round(player_pos.z)
                 ];
 
                 if (this.move) { 
                     this.move.tween.stop();
                     this.move = new Move(
-                        this.position, 
-                        rpos,
+                        fpos, 
+                        tpos,
                         this.map, 
-                        this.renderable.position
+                        this.position_get()
                     );
                 }
-                else this.move = new Move(this.position, rpos, this.map);
+                else this.move = new Move(fpos, tpos, this.map);
 
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
-                        let y = this.renderable.position.y;
-                        let point = this.get_snap_height({x:pos.x, y, z:pos.z}, this.map.mesh);
+                        let y = this.renderable.mesh.position.y;
+                        let point = this.get_snap_height(new Vector3(pos.x, y, pos.z), this.map.mesh);
                         
                         if (point) {
                             if (point.y<5) this.position_set({x:point.x,z:point.z,y:point.y});
@@ -68,11 +78,11 @@ export class Player {
                         }
 
                         // TODO: process more than just potions, find a way to make ts happy
-                        let p = this.map.pickup(this.position);
-                        if (p) { 
+                        //let p = this.map.pickup(this.position);
+                        /*if (p) { 
                             this.items.potions.push(p); 
                             this.map.ev.emit("console", "Picked up potion "+p.name);
-                        }
+                        }*/
                     },
                     final: () => { 
                         this.renderable.draw_position();
@@ -87,32 +97,25 @@ export class Player {
 
     // sets position of renderable and also grid position based on rounding
     position_set (pos: {x,z, y?}) {
-        this.renderable.position.x = pos.x;
-        this.renderable.position.z = pos.z;
-        if (pos.y) this.renderable.position.y = pos.y;
-
-        // update game position
-        let rpos:[number,number] = [
-            Math.round(pos.x),
-            Math.round(pos.z)
-        ];
-        this.position = rpos;
+        this.renderable.mesh.position.x = pos.x;
+        this.renderable.mesh.position.z = pos.z;
+        if (pos.y) this.renderable.mesh.position.y = pos.y;
     }
-    position_get(): [number,number] {
-        return this.position
+    position_get(): Vector3 {
+        if (this.renderable) return this.renderable.mesh.position
     }
 
-    snap_to_terrain(point_?: Three.Vector3) {
+    snap_to_terrain(point_?: Vector3) {
         let point;
-        if (!point_) { point = this.get_snap_height (this.renderable.position, this.map.mesh); }
+        if (!point_) { point = this.get_snap_height (this.position_get(), this.map.mesh); }
         else { point = point_ };
 
-        if (point) this.renderable.position.y = point.y;
+        if (point) this.renderable.mesh.position.y = point.y;
     }
 
-    get_snap_height(position: {x:number,y:number,z:number}, mesh: Three.Mesh): Three.Vector3 {
-        let origin = new Three.Vector3(position.x, position.y+1, position.z);
-        let dir = new Three.Vector3(position.x, position.y-1, position.z);
+    get_snap_height(position: Vector3, mesh: Three.Mesh): Vector3 {
+        let origin = new Vector3(position.x, position.y+1, position.z);
+        let dir = new Vector3(position.x, position.y-1, position.z);
         dir = dir.sub(origin).normalize();
 
         this.raycaster.set(origin,dir);
@@ -146,15 +149,13 @@ export class Attributes {
 export class PlayerRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
-    position: {x:number, y:number, z:number};
-    
 
     constructor (r:Renderer, player: Player, cb?: () => void) {
         let loader = new Three.JSONLoader();
         loader.load('./assets/models/player.json', (geometry, materials) => {
             var material = materials[0];
             this.mesh = new Three.Mesh(geometry, material);
-            this.position = {x:0,y:5,z:0};
+            this.position(new Vector3(0,30,0));
             r.scene.add(this.mesh);
             this.renderable = r.new(function(){});
             this.draw_position();
@@ -163,24 +164,26 @@ export class PlayerRenderable {
         });
     }
 
+    position(v: Vector3) {
+        this.mesh.position.set(v.x, v.y, v.z);
+    }
+
     lookAt() {
-        this.renderable.renderer.camera.lookAt(this.position);
+        let camera: Three.Camera = this.renderable.renderer.camera;
+        camera.lookAt(this.mesh.position);
+        camera.position.x = this.mesh.position.x + 5;
+        camera.position.z = this.mesh.position.z + 5;
+        camera.position.y = this.mesh.position.y + 40;
     }
 
     draw_position () {
         this.renderable.fn = (_: Renderer) => {
-            this.mesh.position.x = this.position.x;
-            this.mesh.position.y = this.position.y;
-            this.mesh.position.z = this.position.z;
+            this.lookAt();
         };
     }
 
     draw_tween (tween:Tween) {
         this.renderable.fn = (r: Renderer) => {
-            this.mesh.position.x = this.position.x;
-            this.mesh.position.y = this.position.y;
-            this.mesh.position.z = this.position.z;
-
             this.lookAt();
             tween.update(r.time);
         };

@@ -1,0 +1,12 @@
+{
+    "name": "Subterra Cavern",
+    "map": "cavern",
+    "spawn": [
+        {
+            "player": {
+                "position": [20,5,20]
+            }
+        }
+    ]
+
+}
