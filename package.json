@@ -2,10 +2,6 @@
   "name": "mystic",
   "version": "0.1.0",
   "main": "build/main.js",
-  "scripts": {
-    "start": "electron .",
-    "test": "node ./build/tests/unit.js"
-  },
   "author": {
     "email": "chrisfgill@gmail.com",
     "name": "viperscape",

@@ -12,7 +12,8 @@ export class MapTests {
         assert(files.length > 0);
         
         files.forEach((f) => {
-            this.maps.push(new Map(f));
+            let map_file = f.split('.');
+            this.maps.push(new Map(map_file[0]));
         });
 
         assert(this.maps.length > 0);
