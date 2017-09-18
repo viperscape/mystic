@@ -16,9 +16,9 @@ export class Move {
 
         let layout = [];
         // TODO: build this on map load, then populate with dynamic obstacles
-        for (var ridx=0; ridx < 100; ridx++) {
+        for (var ridx=0; ridx < 200; ridx++) {
             let row = [];
-            for (var i=0; i < 100; i++) {
+            for (var i=0; i < 200; i++) {
                 row.push(1);
             }
 
