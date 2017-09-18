@@ -20,8 +20,10 @@ gulp.task('typescript', function() {
 
 /// copy static assets
 gulp.task('static', function() {
-    return gulp.src(['static/**/*.*','!static/**/*.blend*'])
-        .pipe(gulp.dest("build"));
+    setTimeout(function() {
+        return gulp.src(['static/**/*.*','!static/**/*.blend*'])
+            .pipe(gulp.dest("build"));
+    }, 1500);
 });
 
 gulp.task('clean', function () {
