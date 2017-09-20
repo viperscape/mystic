@@ -13,7 +13,7 @@ export class MapTests {
         
         files.forEach((f) => {
             let map_file = f.split('.');
-            this.maps.push(new Map(map_file[0]));
+            if (map_file[1] == "json") this.maps.push(new Map(map_file[0]));
         });
 
         assert(this.maps.length > 0);
