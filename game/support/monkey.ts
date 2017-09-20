@@ -5,10 +5,12 @@ const THREE = require ("three"); //import THREE into namespace,
 
 export class Monkey {
     // NOTE: we may want bower if we are going to bundle this up
-    CL = "ColladaLoader.js";
+    to_patch = ["ColladaLoader.js"];
 
     constructor() {
-        let _ = fs.readFileSync(path.join(__dirname, this.CL));
-        eval(_.toString());
+        this.to_patch.forEach(f => {
+            let _ = fs.readFileSync(path.join(__dirname, f));
+            eval(_.toString());
+        });
     }
 }
