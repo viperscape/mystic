@@ -17,14 +17,12 @@ export class Player {
     map: Map;
     move: Move;
 
-    raycaster: Three.Raycaster;
     ev: events;
 
-    constructor() {
+    constructor(map?) {
         this.items = new Items;
         this.attributes = new Attributes;
-        
-        this.raycaster = new Three.Raycaster();
+        this.map = map;
     }
 
     render(r:Renderer, cb?: () => void) {
@@ -67,7 +65,7 @@ export class Player {
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
                         let y = this.renderable.mesh.position.y;
-                        let point = this.get_snap_height(new Vector3(pos.x, y, pos.z), this.map.mesh);
+                        let point = this.map.get_snap_height(new Vector3(pos.x, y, pos.z), this.renderable.renderable);
                         
                         if (point) {
                             if (point.y<5) this.position_set({x:point.x,z:point.z,y:point.y});
@@ -97,9 +95,12 @@ export class Player {
 
     // sets position of renderable and also grid position based on rounding
     position_set (pos: {x,z, y?}) {
-        this.renderable.mesh.position.x = pos.x;
-        this.renderable.mesh.position.z = pos.z;
-        if (pos.y) this.renderable.mesh.position.y = pos.y;
+        if (this.renderable) {
+            this.renderable.mesh.position.x = pos.x;
+            this.renderable.mesh.position.z = pos.z;
+            if (pos.y) this.renderable.mesh.position.y = pos.y;
+            else this.snap_to_terrain()
+        }
     }
     position_get(): Vector3 {
         if (this.renderable) return this.renderable.mesh.position
@@ -107,22 +108,10 @@ export class Player {
 
     snap_to_terrain(point_?: Vector3) {
         let point;
-        if (!point_) { point = this.get_snap_height (this.position_get(), this.map.mesh); }
+        if (!point_) { point = this.map.get_snap_height (this.position_get(), this.renderable.renderable); }
         else { point = point_ };
 
         if (point) this.renderable.mesh.position.y = point.y;
-    }
-
-    get_snap_height(position: Vector3, mesh: Three.Mesh): Vector3 {
-        let origin = new Vector3(position.x, position.y+1, position.z);
-        let dir = new Vector3(position.x, position.y-1, position.z);
-        dir = dir.sub(origin).normalize();
-
-        this.raycaster.set(origin,dir);
-        let intersects = this.raycaster.intersectObjects([mesh]);
-        if (intersects.length > 0) {
-            return intersects[0].point;
-        }
     }
 }
 
@@ -155,17 +144,13 @@ export class PlayerRenderable {
         loader.load('./assets/models/player.json', (geometry, materials) => {
             var material = materials[0];
             this.mesh = new Three.Mesh(geometry, material);
-            this.position(new Vector3(0,30,0));
+            this.mesh.position.set(0,30,0);
             r.scene.add(this.mesh);
             this.renderable = r.new(function(){});
             this.draw_position();
             
             if (cb) cb();
         });
-    }
-
-    position(v: Vector3) {
-        this.mesh.position.set(v.x, v.y, v.z);
     }
 
     lookAt() {

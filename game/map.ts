@@ -13,11 +13,9 @@ export class Map {
     map: Object;
     name: string;
     target_name: string;
-    layout: any[];
     items: Items; // base game items loaded from storage
     mesh: Three.Mesh; // terrain mesh
 
-    tiles: Tile[];
     objects: {potions}; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
     player: Player;
     zones: [{ 
@@ -30,9 +28,7 @@ export class Map {
     renderer: Renderer; // for now hold on to renderer for entry render handling
 
     constructor (file:string, items?: Items, ev?: events) {
-        this.layout = [];
         this.objects = { potions: [] };
-        this.tiles = [];
         this.items = items;
         this.zones = [] as [{ grid, target, mesh, id }];
         this.ev = ev;
@@ -42,27 +38,14 @@ export class Map {
         this.name = this.map["name"];
     }
 
+    get_snap_height(position: Three.Vector3, renderable: Renderable): Three.Vector3 {
+        return renderable.get_snap_height(position, this.mesh);
+    }
+
     render (r:Renderer) {
         this.renderer = r;
 
-        this.layout.forEach((row, ridx) => {
-            row.forEach((e, eidx) => {
-                if ((e["potion"]) && (this.items)) {
-                    let potion = new Potion;
-                    let p = this.items.find("potion",{kind:e["potion"]});
-                    if (p.length > 0) {
-                        var rand = Math.floor(Math.random()*p.length);
-                        potion.from(p[rand]); // pick random of kind
-                        
-                        potion.renderable = this.items.potion_models[potion.kind].clone();
-                        potion.renderable.build(r, () => {
-                            potion.renderable.position = { x: eidx, z: ridx, y: potion.renderable.position.y };
-                            potion.renderable.rotate();
-                        });
-                        
-                        this.objects.potions.push(potion);
-                    }
-                }
+                /*
                 else if (e["entry"]) {
                     let mat = { color: 0x0, opacity: 1 };
                     let stone_brown = 0x4b331d;
@@ -96,9 +79,7 @@ export class Map {
                         idx: e["idx"], // may be undefined
                         mesh: mesh
                     });
-                }
-            });
-        });
+                }*/
 
         if (this.map["spawn"]) {
             this.map["spawn"].forEach(e => {
@@ -111,6 +92,23 @@ export class Map {
                         if (pos) this.player.position_set({x:pos[0],y:pos[1],z:pos[2]});
                         this.player.renderable.lookAt();
                     });
+                }
+                else if ((e["potion"]) && (this.items)) {
+                    let potion = new Potion;
+                    let p = this.items.find("potion",{kind:e["potion"]});
+                    if (p.length > 0) {
+                        var rand = Math.floor(Math.random()*p.length);
+                        potion.from(p[rand]); // pick random of kind
+                        
+                        potion.renderable = this.items.potion_models[potion.kind].clone();
+                        potion.renderable.build(r, () => {
+                            let pos: number[] = e["potion"].position;
+                            potion.position_set({x: pos[0], y: pos[1], z: pos[2]});
+                            potion.renderable.rotate();
+                        });
+                        
+                        this.objects.potions.push(potion);
+                    }
                 }
             });
         }
@@ -181,9 +179,6 @@ export class Map {
     // stop all renderables
     stop() {
         this.objects.potions.forEach(e => {
-            e.renderable.stop();
-        });
-        this.tiles.forEach(e => {
             e.renderable.stop();
         });
         if (this.renderer) {

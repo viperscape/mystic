@@ -1,5 +1,7 @@
 import {Renderable,Renderer} from "./render";
 import {Attributes, Player} from "./player";
+import {Map} from "./map";
+
 import Three = require("three");
 
 export class Potion {
@@ -12,11 +14,13 @@ export class Potion {
 
     debuff = new Debuff;
     renderable: PotionRenderable;
+    map: Map;
 
-    constructor () {
+    constructor (map?) {
         this.name = "unknown potion";
         this.kind = "unknown kind";
         this.attributes = new Attributes;
+        this.map = map;
     }
 
     from(obj: Object) {
@@ -48,6 +52,26 @@ export class Potion {
             }
         }
     }
+
+    position_set (pos: {x,z, y?}) {
+        if (this.renderable) {
+            this.renderable.mesh.position.x = pos.x;
+            this.renderable.mesh.position.z = pos.z;
+            if (pos.y) this.renderable.mesh.position.y = pos.y;
+            else {}
+        }
+    }
+    position_get(): Three.Vector3 {
+        if (this.renderable) return this.renderable.mesh.position
+    }
+
+    snap_to_terrain(point_?: Three.Vector3) {
+        let point;
+        if (!point_) { point = this.map.get_snap_height (this.position_get(), this.renderable.renderable); }
+        else { point = point_ };
+
+        if (point) this.renderable.mesh.position.y = point.y;
+    }
 }
 
 export class Debuff {
@@ -71,7 +95,6 @@ export class Debuff {
 export class PotionRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
-    position: {x:number, y:number, z:number};
 
     constructor (potion?: Potion, cb?: () => void) {
         if (!potion) return; // we have this so we can build blank classes to clone into
@@ -98,16 +121,9 @@ export class PotionRenderable {
     }
 
     build (r:Renderer, cb?: () => void) {
-        this.position = {x:0,y:0,z:0};
         r.scene.add(this.mesh);
-        
-        let draw = (r: Renderer) => {
-            this.mesh.position.x = this.position.x;
-            this.mesh.position.y = this.position.y;
-            this.mesh.position.z = this.position.z;
-        };
 
-        this.renderable = r.new(draw);
+        this.renderable = r.new(function(){});
 
         if (cb) cb();
     }
@@ -119,10 +135,7 @@ export class PotionRenderable {
     rotate () {
         if (!this.renderable) return;
 
-        let draw = (r: Renderer) => {            
-            this.mesh.position.x = this.position.x;
-            this.mesh.position.y = this.position.y;
-            this.mesh.position.z = this.position.z;
+        let draw = (r: Renderer) => {
             this.mesh.rotation.y += r.delta * 45 * Math.PI / 180;
         };
         this.renderable.fn = draw;
