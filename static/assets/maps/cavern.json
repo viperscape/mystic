@@ -5,6 +5,10 @@
         {
             "player": {
                 "position": [50,5,50]
+            },
+            "potion": {
+                "kind": "elixer",
+                "position": [55,0,50]
             }
         }
     ]
