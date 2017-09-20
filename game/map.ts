@@ -119,9 +119,8 @@ export class Map {
         loader.options.convertUpAxis = true;
         loader.load("./assets/maps/"+this.target_name+".dae", (dae) => {
             this.mesh = dae.scene.children[0].children[0] as Three.Mesh; // get underlying mesh
-            this.mesh.position.set(50,0,50);
+            this.mesh.position.set(50,0,50); // NOTE: we must place in positive coordinates
             this.renderer.scene.add(this.mesh);
-            console.log(this.mesh.getWorldPosition());
 
             let light = new Three.PointLight(0xffffff, 0.8, 100); 
             light.position.set(0, 0, 100);
