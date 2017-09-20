@@ -1,11 +1,13 @@
 import {Renderable,Renderer} from "./render";
 import {Potion} from "./potion";
-import Three = require("three");
 import {Items} from "./items";
 import {Player} from "./player";
 import {Tile} from "./tile";
 
 import events = require("events");
+import Three = require("three");
+import Monkey = require("./support/monkey");
+new Monkey.Monkey();
 
 export class Map {
     map: Object;
@@ -113,10 +115,11 @@ export class Map {
             });
         }
 
-        let loader = new Three.JSONLoader();
-        loader.load("./assets/maps/"+this.target_name+".json", (geometry, materials) => {
-            this.mesh = new Three.Mesh(geometry, materials[0]);
-            this.renderer.scene.add(this.mesh);
+        let loader = new Three.ColladaLoader();
+        loader.load("./assets/maps/"+this.target_name+".dae", (dae) => {
+            this.renderer.scene.add(dae.scene);
+            //this.mesh = new Three.Mesh(geometry, materials[0]);
+            //this.renderer.scene.add(this.mesh);
 
             let light = new Three.PointLight(0xffffff, 0.8, 100); 
             light.position.set(0, 0, 100);

@@ -87,7 +87,6 @@ function check_input (r: render.Renderer, mesh: Three.Mesh[], cb: (v: Three.Vect
 
         let intersects = raycaster.intersectObjects(mesh);
         if (intersects.length > 0) {
-            console.log("intersects",intersects[0].point)
             cb(intersects[0].point)
         }
     }

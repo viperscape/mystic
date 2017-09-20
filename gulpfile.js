@@ -31,4 +31,10 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-gulp.task('build', ['static','typescript']);
+// we want to copy locally the collada loader file
+gulp.task('support', function() {
+    return gulp.src(["node_modules/three/examples/js/loaders/ColladaLoader.js"])
+        .pipe(gulp.dest("build/game/support"));
+});
+
+gulp.task('build', ['support','static','typescript']);
