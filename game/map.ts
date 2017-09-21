@@ -109,25 +109,25 @@ export class Map {
                         }
                     }
 
-                    if ((e["player"]) && (!this.player)) {
+                    if ((e.player) && (!this.player)) {
                         this.player = new Player();
                         this.player.map = this;
                         
                         this.player.render(r,() => {
-                            maybe_snap(e["player"].position,this.player.renderable);
+                            maybe_snap(e.player.position,this.player.renderable);
                             this.player.renderable.lookAt();
                         });
                     }
-                    else if ((e["potion"]) && (this.items)) {
+                    else if ((e.potion) && (this.items)) {
                         let potion = new Potion;
-                        let p = this.items.find("potion",{kind:e["potion"]});
+                        let p = this.items.find("potion",{kind:e.potion.kind});
                         if (p.length > 0) {
                             var rand = Math.floor(Math.random()*p.length);
                             potion.from(p[rand]); // pick random of kind
                             
                             potion.renderable = this.items.potion_models[potion.kind].clone();
                             potion.renderable.build(r, () => {
-                                maybe_snap(e["potion"].position,potion.renderable);
+                                maybe_snap(e.potion.position,potion.renderable);
                                 potion.renderable.rotate();
                             });
                             
