@@ -148,9 +148,13 @@ export class Map {
             this.mesh.receiveShadow = true;
 
             let sun = dae.scene.getObjectByName("sun").children[0] as Three.DirectionalLight;
+            
             sun.castShadow = true;
-
+            let helper = new Three.DirectionalLightHelper(sun, 10);
+            this.renderer.scene.add(helper);
             this.renderer.scene.add(dae.scene);
+
+            console.log(sun);
             
             then_render();
 
