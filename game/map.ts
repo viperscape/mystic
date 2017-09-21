@@ -39,7 +39,7 @@ export class Map {
     }
 
     get_snap_height(renderable: ObjectRenderable, position_?: Three.Vector3): Three.Vector3 {
-        let position = position_ || renderable.mesh.position;
+        let position = position_? position_ : renderable.mesh.position;
         let origin = new Three.Vector3(position.x, position.y+1, position.z);
         let dir = new Three.Vector3(position.x, position.y-1, position.z);
         dir = dir.sub(origin).normalize();
@@ -98,13 +98,24 @@ export class Map {
 
         if (this.map["spawn"]) {
             this.map["spawn"].forEach(e => {
+                let maybe_snap = (pos: {x:number,y?,z}, renderable: ObjectRenderable) => {
+                    if (pos) {
+                        if (!pos.y) {
+                            pos.y = 10;
+                            renderable.mesh.position.set(pos.x,pos.y,pos.z);
+                            this.snap_to_terrain(renderable);
+                        }
+                        else renderable.mesh.position.set(pos.x,pos.y,pos.z);
+                    }
+                }
+
                 if ((e["player"]) && (!this.player)) {
                     this.player = new Player();
                     this.player.map = this;
                     
                     this.player.render(r,() => {
-                        let pos: number[] = e["player"].position;
-                        if (pos) this.player.position_set({x:pos[0],y:pos[1],z:pos[2]});
+                        maybe_snap(e["player"].position,this.player.renderable);
+
                         this.player.renderable.lookAt();
                     });
                 }
@@ -117,8 +128,8 @@ export class Map {
                         
                         potion.renderable = this.items.potion_models[potion.kind].clone();
                         potion.renderable.build(r, () => {
-                            let pos: number[] = e["potion"].position;
-                            potion.position_set({x: pos[0], y: pos[1], z: pos[2]});
+                            maybe_snap(e["potion"].position,potion.renderable);
+                             
                             potion.renderable.rotate();
                         });
                         

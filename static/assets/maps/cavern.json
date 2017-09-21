@@ -4,11 +4,11 @@
     "spawn": [
         {
             "player": {
-                "position": [50,5,50]
+                "position": {"x":50,"z":50}
             },
             "potion": {
                 "kind": "elixer",
-                "position": [55,0,50]
+                "position": {"x":55,"z":50}
             }
         }
     ]

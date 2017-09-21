@@ -1,4 +1,4 @@
-import {Renderable,Renderer} from "./render";
+import {Renderable,ObjectRenderable,Renderer} from "./render";
 import {Attributes, Player} from "./player";
 import {Map} from "./map";
 
@@ -14,13 +14,11 @@ export class Potion {
 
     debuff = new Debuff;
     renderable: PotionRenderable;
-    map: Map;
 
-    constructor (map?) {
+    constructor () {
         this.name = "unknown potion";
         this.kind = "unknown kind";
         this.attributes = new Attributes;
-        this.map = map;
     }
 
     from(obj: Object) {
@@ -64,14 +62,6 @@ export class Potion {
     position_get(): Three.Vector3 {
         if (this.renderable) return this.renderable.mesh.position
     }
-
-    snap_to_terrain(point_?: Three.Vector3) {
-        let point;
-        if (!point_) { point = this.map.get_snap_height (this.position_get(), this.renderable.renderable); }
-        else { point = point_ };
-
-        if (point) this.renderable.mesh.position.y = point.y;
-    }
 }
 
 export class Debuff {
@@ -92,9 +82,10 @@ export class Debuff {
     }
 }
 
-export class PotionRenderable {
+export class PotionRenderable implements ObjectRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
+    raycaster = new Three.Raycaster();
 
     constructor (potion?: Potion, cb?: () => void) {
         if (!potion) return; // we have this so we can build blank classes to clone into
