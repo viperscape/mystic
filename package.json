@@ -14,7 +14,7 @@
     "three": "^0.87.1"
   },
   "devDependencies": {
-    "@types/node": "^8.0.26",
+    "@types/node": "^8.0.28",
     "@types/three": "^0.84.22",
     "@types/tweenjs": "^0.6.27",
     "browserify": "^14.4.0",
