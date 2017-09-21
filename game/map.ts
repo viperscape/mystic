@@ -144,7 +144,7 @@ export class Map {
         (loader as any).options.convertUpAxis = true;
         loader.load("./assets/maps/"+this.target_name+".dae", (dae) => {
             this.mesh = dae.scene.getObjectByName("terrain").children[0] as Three.Mesh; // get underlying mesh
-            this.mesh.position.set(50,0,50); // NOTE: we must place in positive coordinates
+            dae.scene.position.set(50,0,50); // NOTE: we must place in positive coordinates
             this.mesh.receiveShadow = true;
 
             let sun = dae.scene.getObjectByName("sun").children[0] as Three.DirectionalLight;
