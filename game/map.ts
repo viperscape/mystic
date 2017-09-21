@@ -114,7 +114,7 @@ export class Map {
         }
 
         let loader = new Three.ColladaLoader();
-        loader.options.convertUpAxis = true;
+        (loader as any).options.convertUpAxis = true;
         loader.load("./assets/maps/"+this.target_name+".dae", (dae) => {
             this.mesh = dae.scene.children[0].children[0] as Three.Mesh; // get underlying mesh
             this.mesh.position.set(50,0,50); // NOTE: we must place in positive coordinates
