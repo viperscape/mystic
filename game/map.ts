@@ -94,7 +94,7 @@ export class Map {
                         mesh: mesh
                     });
                 }*/
-
+                
         let then_render = () => {
             if (this.map["spawn"]) {
                 this.map["spawn"].forEach(e => {
@@ -149,7 +149,6 @@ export class Map {
 
             let sun = dae.scene.getObjectByName("sun").children[0] as Three.DirectionalLight;
             sun.castShadow = true;
-            sun.target.castShadow = true;
 
             this.renderer.scene.add(dae.scene);
             
