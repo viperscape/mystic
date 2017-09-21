@@ -53,7 +53,8 @@ export function init_3d(): Renderer {
     
     scene.add(camera);
     ctx.setSize(WIDTH, HEIGHT);
-    ctx.setPixelRatio( window.devicePixelRatio );
+    ctx.setPixelRatio(window.devicePixelRatio);
+    ctx.gammaOutput = true;
     
     return new Renderer(ctx,scene,camera);
 }
