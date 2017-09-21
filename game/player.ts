@@ -149,9 +149,9 @@ export class PlayerRenderable implements ObjectRenderable {
     lookAt() {
         let camera: Three.Camera = this.renderable.renderer.camera;
         camera.lookAt(this.mesh.position);
-        camera.position.x = this.mesh.position.x + 0;
-        camera.position.z = this.mesh.position.z + 0;
-        camera.position.y = this.mesh.position.y + 200;
+        camera.position.x = this.mesh.position.x + 15;
+        camera.position.z = this.mesh.position.z + 15;
+        camera.position.y = this.mesh.position.y + 25;
     }
 
     draw_position () {

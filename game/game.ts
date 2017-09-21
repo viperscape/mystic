@@ -30,8 +30,6 @@ export class Game {
                 this.map.player.handler(this.ev);
 
                 if (cb) cb();
-
-                m.player.renderable.lookAt();
                 this.console_append("Now entering the area "+m.name); // TODO: zone and render conflict on double emits
 
                 let emit = (v: Three.Vector3) => {

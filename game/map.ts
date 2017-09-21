@@ -53,7 +53,6 @@ export class Map {
 
     snap_to_terrain(renderable: ObjectRenderable) {
         let point = this.get_snap_height(renderable);
-
         if (point) renderable.mesh.position.y = point.y;
     }
 
@@ -96,47 +95,47 @@ export class Map {
                     });
                 }*/
 
-        if (this.map["spawn"]) {
-            this.map["spawn"].forEach(e => {
-                let maybe_snap = (pos: {x:number,y?,z}, renderable: ObjectRenderable) => {
-                    if (pos) {
-                        if (!pos.y) {
-                            pos.y = 10;
-                            renderable.mesh.position.set(pos.x,pos.y,pos.z);
-                            this.snap_to_terrain(renderable);
+        let then_render = () => {
+            if (this.map["spawn"]) {
+                this.map["spawn"].forEach(e => {
+                    let maybe_snap = (pos: {x:number,y?,z}, renderable: ObjectRenderable) => {
+                        if (pos) {
+                            if (!pos.y) {
+                                pos.y = 10;
+                                renderable.mesh.position.set(pos.x,pos.y,pos.z);
+                                this.snap_to_terrain(renderable);
+                            }
+                            else renderable.mesh.position.set(pos.x,pos.y,pos.z);
                         }
-                        else renderable.mesh.position.set(pos.x,pos.y,pos.z);
                     }
-                }
 
-                if ((e["player"]) && (!this.player)) {
-                    this.player = new Player();
-                    this.player.map = this;
-                    
-                    this.player.render(r,() => {
-                        maybe_snap(e["player"].position,this.player.renderable);
-
-                        this.player.renderable.lookAt();
-                    });
-                }
-                else if ((e["potion"]) && (this.items)) {
-                    let potion = new Potion;
-                    let p = this.items.find("potion",{kind:e["potion"]});
-                    if (p.length > 0) {
-                        var rand = Math.floor(Math.random()*p.length);
-                        potion.from(p[rand]); // pick random of kind
+                    if ((e["player"]) && (!this.player)) {
+                        this.player = new Player();
+                        this.player.map = this;
                         
-                        potion.renderable = this.items.potion_models[potion.kind].clone();
-                        potion.renderable.build(r, () => {
-                            maybe_snap(e["potion"].position,potion.renderable);
-                             
-                            potion.renderable.rotate();
+                        this.player.render(r,() => {
+                            maybe_snap(e["player"].position,this.player.renderable);
+                            this.player.renderable.lookAt();
                         });
-                        
-                        this.objects.potions.push(potion);
                     }
-                }
-            });
+                    else if ((e["potion"]) && (this.items)) {
+                        let potion = new Potion;
+                        let p = this.items.find("potion",{kind:e["potion"]});
+                        if (p.length > 0) {
+                            var rand = Math.floor(Math.random()*p.length);
+                            potion.from(p[rand]); // pick random of kind
+                            
+                            potion.renderable = this.items.potion_models[potion.kind].clone();
+                            potion.renderable.build(r, () => {
+                                maybe_snap(e["potion"].position,potion.renderable);
+                                potion.renderable.rotate();
+                            });
+                            
+                            this.objects.potions.push(potion);
+                        }
+                    }
+                });
+            }
         }
 
         let loader = new Three.ColladaLoader();
@@ -150,9 +149,7 @@ export class Map {
             light.position.set(0, 0, 100);
             this.renderer.scene.add(light);
             
-            if (this.player) {
-                this.snap_to_terrain(this.player.renderable);
-            }
+            then_render();
 
             this.ev.emit("map", this);
         });
