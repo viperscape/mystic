@@ -55,6 +55,7 @@ export function init_3d(): Renderer {
     ctx.setSize(WIDTH, HEIGHT);
     ctx.setPixelRatio(window.devicePixelRatio);
     ctx.gammaOutput = true;
+    ctx.shadowMap.enabled = true;
     
     return new Renderer(ctx,scene,camera);
 }

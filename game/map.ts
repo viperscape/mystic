@@ -116,6 +116,7 @@ export class Map {
                         this.player.render(r,() => {
                             maybe_snap(e.player.position,this.player.renderable);
                             this.player.renderable.lookAt();
+                            this.player.renderable.mesh.castShadow = true;
                         });
                     }
                     else if ((e.potion) && (this.items)) {
@@ -129,6 +130,7 @@ export class Map {
                             potion.renderable.build(r, () => {
                                 maybe_snap(e.potion.position,potion.renderable);
                                 potion.renderable.rotate();
+                                potion.renderable.mesh.castShadow = true;
                             });
                             
                             this.objects.potions.push(potion);
@@ -143,11 +145,15 @@ export class Map {
         loader.load("./assets/maps/"+this.target_name+".dae", (dae) => {
             this.mesh = dae.scene.getObjectByName("terrain").children[0] as Three.Mesh; // get underlying mesh
             this.mesh.position.set(50,0,50); // NOTE: we must place in positive coordinates
-            this.renderer.scene.add(dae.scene);
+            
+            this.mesh.receiveShadow = true;
 
-            let light = new Three.PointLight(0xffffff, 0.8, 100); 
-            light.position.set(0, 0, 100);
-            //this.renderer.scene.add(light);
+            let sun = dae.scene.getObjectByName("sun").children[0] as Three.DirectionalLight;
+            sun.castShadow = true;
+            sun.target.castShadow = true;
+            console.log(sun);
+
+            this.renderer.scene.add(dae.scene);
             
             then_render();
 

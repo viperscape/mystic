@@ -5,13 +5,13 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.79.0 commit date:2017-08-18, commit time:12:53, hash:7b397cd</authoring_tool>
     </contributor>
-    <created>2017-09-21T14:54:26</created>
-    <modified>2017-09-21T14:54:26</modified>
+    <created>2017-09-21T15:34:58</created>
+    <modified>2017-09-21T15:34:58</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_lights>
-    <light id="Sun-light" name="Sun">
+    <light id="sun-light" name="sun">
       <technique_common>
         <directional>
           <color sid="color">0.5770594 0.617272 1</color>
@@ -21,7 +21,7 @@
         <technique profile="blender">
           <type sid="type" type="int">1</type>
           <flag sid="flag" type="int">0</flag>
-          <mode sid="mode" type="int">1</mode>
+          <mode sid="mode" type="int">8193</mode>
           <gamma sid="blender_gamma" type="float">1</gamma>
           <red sid="red" type="float">0.5770595</red>
           <green sid="green" type="float">0.617272</green>
@@ -53,11 +53,11 @@
           <ray_sampz sid="ray_sampz" type="int">1</ray_sampz>
           <ray_samp_type sid="ray_samp_type" type="int">0</ray_samp_type>
           <area_shape sid="area_shape" type="int">0</area_shape>
-          <area_size sid="area_size" type="float">0.1</area_size>
+          <area_size sid="area_size" type="float">0.111</area_size>
           <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
           <area_sizez sid="area_sizez" type="float">0.1</area_sizez>
           <adapt_thresh sid="adapt_thresh" type="float">0.000999987</adapt_thresh>
-          <ray_samp_method sid="ray_samp_method" type="int">1</ray_samp_method>
+          <ray_samp_method sid="ray_samp_method" type="int">2</ray_samp_method>
           <shadhalostep sid="shadhalostep" type="int">0</shadhalostep>
           <sun_effect_type sid="sun_effect_type" type="int">0</sun_effect_type>
           <skyblendtype sid="skyblendtype" type="int">1</skyblendtype>
@@ -143,7 +143,7 @@
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
       <node id="terrain" name="terrain" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
+        <matrix sid="transform">0.9955061 -1.27234e-8 0.0946971 -0.338038 1.27234e-8 1 6.03788e-10 -5.37083e-8 -0.0946971 6.03794e-10 0.9955061 0.425103 0 0 0 1</matrix>
         <instance_geometry url="#Grid_002-mesh" name="terrain">
           <bind_material>
             <technique_common>
@@ -152,9 +152,9 @@
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="Sun" name="Sun" type="NODE">
-        <matrix sid="transform">1 0 0 -0.05940641 0 1 0 0.1646417 0 0 1 23.07169 0 0 0 1</matrix>
-        <instance_light url="#Sun-light"/>
+      <node id="sun" name="sun" type="NODE">
+        <matrix sid="transform">0.3867174 -1.23906e-7 0.9221982 23.92139 1.23906e-7 1 8.24e-8 0.1646431 -0.9221982 8.23999e-8 0.3867174 12.37961 0 0 0 1</matrix>
+        <instance_light url="#sun-light"/>
       </node>
     </visual_scene>
   </library_visual_scenes>
