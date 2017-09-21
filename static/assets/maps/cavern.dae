@@ -5,8 +5,8 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.79.0 commit date:2017-08-18, commit time:12:53, hash:7b397cd</authoring_tool>
     </contributor>
-    <created>2017-09-20T10:42:14</created>
-    <modified>2017-09-20T10:42:14</modified>
+    <created>2017-09-21T14:14:16</created>
+    <modified>2017-09-21T14:14:16</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
@@ -75,9 +75,9 @@
   <library_controllers/>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="Grid" name="Grid" type="NODE">
+      <node id="terrain" name="terrain" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-        <instance_geometry url="#Grid_002-mesh" name="Grid">
+        <instance_geometry url="#Grid_002-mesh" name="terrain">
           <bind_material>
             <technique_common>
               <instance_material symbol="Material_001-material" target="#Material_001-material"/>
