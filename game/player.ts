@@ -1,5 +1,5 @@
 import {Items} from "./items";
-import {Renderable,Renderer} from "./render";
+import {Renderable,ObjectRenderable, Renderer} from "./render";
 import {Move} from "./move";
 import {Map} from "./map";
 import {Potion} from "./potion";
@@ -65,7 +65,7 @@ export class Player {
                     renderer: this.renderable.renderable.renderer, 
                     update: (pos: {x,z}) => {
                         let y = this.renderable.mesh.position.y;
-                        let point = this.map.get_snap_height(new Vector3(pos.x, y, pos.z), this.renderable.renderable);
+                        let point = this.map.get_snap_height(this.renderable, new Vector3(pos.x, y, pos.z), );
                         
                         if (point) {
                             if (point.y<5) this.position_set({x:point.x,z:point.z,y:point.y});
@@ -99,19 +99,11 @@ export class Player {
             this.renderable.mesh.position.x = pos.x;
             this.renderable.mesh.position.z = pos.z;
             if (pos.y) this.renderable.mesh.position.y = pos.y;
-            else this.snap_to_terrain()
+            else this.map.snap_to_terrain(this.renderable)
         }
     }
     position_get(): Vector3 {
         if (this.renderable) return this.renderable.mesh.position
-    }
-
-    snap_to_terrain(point_?: Vector3) {
-        let point;
-        if (!point_) { point = this.map.get_snap_height (this.position_get(), this.renderable.renderable); }
-        else { point = point_ };
-
-        if (point) this.renderable.mesh.position.y = point.y;
     }
 }
 
@@ -135,9 +127,10 @@ export class Attributes {
     }
 }
 
-export class PlayerRenderable {
+export class PlayerRenderable implements ObjectRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
+    raycaster = new Three.Raycaster();
 
     constructor (r:Renderer, player: Player, cb?: () => void) {
         let loader = new Three.JSONLoader();

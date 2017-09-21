@@ -1,4 +1,4 @@
-import {Renderable,Renderer} from "./render";
+import {Renderable,ObjectRenderable, Renderer} from "./render";
 import {Potion} from "./potion";
 import {Items} from "./items";
 import {Player} from "./player";
@@ -38,8 +38,23 @@ export class Map {
         this.name = this.map["name"];
     }
 
-    get_snap_height(position: Three.Vector3, renderable: Renderable): Three.Vector3 {
-        return renderable.get_snap_height(position, this.mesh);
+    get_snap_height(renderable: ObjectRenderable, position_?: Three.Vector3): Three.Vector3 {
+        let position = position_ || renderable.mesh.position;
+        let origin = new Three.Vector3(position.x, position.y+1, position.z);
+        let dir = new Three.Vector3(position.x, position.y-1, position.z);
+        dir = dir.sub(origin).normalize();
+
+        renderable.raycaster.set(origin,dir);
+        let intersects = renderable.raycaster.intersectObjects([this.mesh]);
+        if (intersects.length > 0) {
+            return intersects[0].point;
+        }
+    }
+
+    snap_to_terrain(renderable: ObjectRenderable) {
+        let point = this.get_snap_height(renderable);
+
+        if (point) renderable.mesh.position.y = point.y;
     }
 
     render (r:Renderer) {
@@ -125,7 +140,7 @@ export class Map {
             this.renderer.scene.add(light);
             
             if (this.player) {
-                this.player.snap_to_terrain();
+                this.snap_to_terrain(this.player.renderable);
             }
 
             this.ev.emit("map", this);

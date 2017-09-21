@@ -85,17 +85,20 @@ export class Renderer {
     }
 }
 
+export interface ObjectRenderable {
+    renderable: Renderable;
+    mesh: Three.Mesh;
+    raycaster: Three.Raycaster;
+}
+
 export class Renderable {
     id: number;
     renderer: Renderer; // we can use this later for tweens, etc.
     fn: (r:Renderer) => void; // NOTE: this may become a map of functions to iterate
-    
-    raycaster: Three.Raycaster;
 
     constructor (r:Renderer, fn: (r:Renderer) => void) {
         this.fn = fn;
         this.renderer = r;
-        this.raycaster = new Three.Raycaster();
 
         let render = () => {
             this.id = requestAnimationFrame(render);  
@@ -108,18 +111,6 @@ export class Renderable {
         if (this.id.constructor == Number) {
             cancelAnimationFrame(this.id);
             this.renderer.scene.remove(obj);
-        }
-    }
-
-    get_snap_height(position: Three.Vector3, mesh: Three.Mesh): Three.Vector3 {
-        let origin = new Three.Vector3(position.x, position.y+1, position.z);
-        let dir = new Three.Vector3(position.x, position.y-1, position.z);
-        dir = dir.sub(origin).normalize();
-
-        this.raycaster.set(origin,dir);
-        let intersects = this.raycaster.intersectObjects([mesh]);
-        if (intersects.length > 0) {
-            return intersects[0].point;
         }
     }
 }
