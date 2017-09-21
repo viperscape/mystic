@@ -2,7 +2,7 @@ start: test
     electron .
 
 run:
-    electron .
+    ./node_modules/electron/dist/electron .
 
 test: prep
     node ./build/tests/unit.js
