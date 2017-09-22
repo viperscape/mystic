@@ -151,7 +151,7 @@ export class PlayerRenderable implements ObjectRenderable {
         camera.lookAt(this.mesh.position);
         camera.position.x = this.mesh.position.x + 15;
         camera.position.z = this.mesh.position.z + 15;
-        camera.position.y = this.mesh.position.y + 45;
+        camera.position.y = this.mesh.position.y + 15;
     }
 
     draw_position () {

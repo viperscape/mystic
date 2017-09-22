@@ -147,15 +147,10 @@ export class Map {
             dae.scene.position.set(50,0,50); // NOTE: we must place in positive coordinates
             this.mesh.receiveShadow = true;
 
-            let sun = dae.scene.getObjectByName("sun").children[0] as Three.DirectionalLight;
-            
-            sun.castShadow = true;
-            let helper = new Three.DirectionalLightHelper(sun, 10);
-            this.renderer.scene.add(helper);
-            this.renderer.scene.add(dae.scene);
+            let lights = dae.scene.getObjectByName("lights");
+            lights.children.map(function (light) { light.castShadow = true });
 
-            console.log(sun);
-            
+            this.renderer.scene.add(dae.scene);
             then_render();
 
             this.ev.emit("map", this);
