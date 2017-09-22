@@ -147,9 +147,6 @@ export class Map {
             dae.scene.position.set(50,0,50); // NOTE: we must place in positive coordinates
             this.mesh.receiveShadow = true;
 
-            let lights = dae.scene.getObjectByName("lights");
-            lights.children.map(function (light) { light.castShadow = true });
-
             this.renderer.scene.add(dae.scene);
             then_render();
 
