@@ -156,11 +156,13 @@ export class Map {
 
 
     // NOTE: only processes potion pickups right now
+    // NOTE: assumes renderable is on rounded tile position
+    // TODO: convert to area based coordinate proximity
     pickup (position: [number,number]): any {
         for (var i=0; i < this.objects.potions.length; i++) {
             if (!this.objects.potions[i].renderable) continue;
-            let pos: [number,number] = [this.objects.potions[i].renderable.position.x,
-                this.objects.potions[i].renderable.position.z];
+            let pos: [number,number] = [this.objects.potions[i].renderable.mesh.position.x,
+                this.objects.potions[i].renderable.mesh.position.z];
             
             if (on_same_tile(position, pos)) {
                 let p = this.objects.potions.splice(i,1)[0];

@@ -76,11 +76,13 @@ export class Player {
                         }
 
                         // TODO: process more than just potions, find a way to make ts happy
-                        //let p = this.map.pickup(this.position);
-                        /*if (p) { 
+                        let pos_ = this.position_get();
+                        let coord: [number,number] = [Math.round(pos_.x), Math.round(pos_.z)];
+                        let p = this.map.pickup(coord);
+                        if (p) { 
                             this.items.potions.push(p); 
                             this.map.ev.emit("console", "Picked up potion "+p.name);
-                        }*/
+                        }
                     },
                     final: () => { 
                         this.renderable.draw_position();
