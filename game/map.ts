@@ -156,15 +156,11 @@ export class Map {
 
 
     // NOTE: only processes potion pickups right now
-    // NOTE: assumes renderable is on rounded tile position
-    // TODO: convert to area based coordinate proximity
-    pickup (position: [number,number]): any {
+    pickup (position: Three.Vector3): any {
         for (var i=0; i < this.objects.potions.length; i++) {
             if (!this.objects.potions[i].renderable) continue;
-            let pos: [number,number] = [this.objects.potions[i].renderable.mesh.position.x,
-                this.objects.potions[i].renderable.mesh.position.z];
-            
-            if (on_same_tile(position, pos)) {
+
+            if (position.distanceTo(this.objects.potions[i].position_get()) < 1.25) {
                 let p = this.objects.potions.splice(i,1)[0];
                 p.renderable.stop();
                 return p;
@@ -211,8 +207,4 @@ export class Map {
             });
         }
     }
-}
-
-function on_same_tile (p: [number,number], p2: [number,number]): boolean {
-    return ((p[0] == p2[0]) && (p[1] == p2[1]))
 }
