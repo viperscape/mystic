@@ -35,6 +35,7 @@ export class Potion {
             }
         }
 
+        // TODO: we need to convert this to game time, so it can be paused entirely
         if (this.debuff.time != undefined) {
             setTimeout(() => {
                 this.unuse(p,this.debuff.ignore);
