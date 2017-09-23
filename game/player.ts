@@ -107,6 +107,7 @@ export class Player {
     }
 }
 
+// NOTE: we may need to take into account percentage based attribute buffs/debuffs
 export class Attributes {
     strength = 0;
     stamina = 0;
