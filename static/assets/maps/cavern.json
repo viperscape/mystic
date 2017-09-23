@@ -12,6 +12,12 @@
                 "kind": "elixer",
                 "position": {"x":51,"z":51}
             }
+        },
+        {
+            "npc": {
+                "kind": "skeleton",
+                "position": {"x":60,"z":75}
+            }
         }
     ]
 
