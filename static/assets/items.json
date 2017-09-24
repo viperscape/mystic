@@ -1,4 +1,9 @@
 {
+    "npcs": [
+        {
+            "kind": "skeleton"
+        }
+    ],
     "potions": [
         {
             "name": "Poldark",

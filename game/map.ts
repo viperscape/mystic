@@ -2,6 +2,7 @@ import {Renderable,ObjectRenderable, Renderer} from "./render";
 import {Potion} from "./potion";
 import {Items} from "./items";
 import {Player} from "./player";
+import {NPC} from "./npc";
 import {Tile} from "./tile";
 
 import events = require("events");
@@ -16,8 +17,10 @@ export class Map {
     items: Items; // base game items loaded from storage
     mesh: Three.Mesh; // terrain mesh
 
-    objects: {potions}; // objects in the map, fully loaded and unique // NOTE: this may become a hashmap of sorts
+    objects: {potions: Potion[], npcs: NPC[]}; // objects in the map, fully loaded and unique
     player: Player;
+
+    // FIXME: this now needs to be rethought and redone
     zones: [{ 
         grid: [number,number], 
         target:string, 
@@ -28,7 +31,7 @@ export class Map {
     renderer: Renderer; // for now hold on to renderer for entry render handling
 
     constructor (file:string, items?: Items, ev?: events) {
-        this.objects = { potions: [] };
+        this.objects = { potions: [], npcs: [] };
         this.items = items;
         this.zones = [] as [{ grid, target, mesh, id }];
         this.ev = ev;
@@ -134,6 +137,19 @@ export class Map {
                             });
                             
                             this.objects.potions.push(potion);
+                        }
+                    }
+                    else if (e.npc) {
+                        let npc = new NPC;
+                        npc.from(e.npc);
+
+                        let n = this.items.find("npc",{kind:npc.kind});
+                        if (n.length > 0) {
+                            npc.renderable = this.items.npc_models[npc.kind].clone();
+                            npc.renderable.build(r, () => {
+                                maybe_snap(e.npc.position, npc.renderable);
+                                npc.renderable.mesh.castShadow = true;
+                            });
                         }
                     }
                 });
