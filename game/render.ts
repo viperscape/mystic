@@ -89,6 +89,7 @@ export class Renderer {
     }
 }
 
+// TODO: consider refactoring this into a class with build,clone,stop methods builtin
 export interface ObjectRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
