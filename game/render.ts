@@ -89,11 +89,22 @@ export class Renderer {
     }
 }
 
-// TODO: consider refactoring this into a class with build,clone,stop methods builtin
-export interface ObjectRenderable {
+export class ObjectRenderable {
     renderable: Renderable;
     mesh: Three.Mesh;
-    raycaster: Three.Raycaster;
+    raycaster: Three.Raycaster = new Three.Raycaster();
+
+    build (r:Renderer, cb?: () => void) {
+        r.scene.add(this.mesh);
+
+        this.renderable = r.new(function(){});
+
+        if (cb) cb();
+    }
+
+    stop () {
+        this.renderable.stop(this.mesh);
+    }
 }
 
 export class Renderable {

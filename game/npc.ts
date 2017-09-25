@@ -20,12 +20,10 @@ export class NPC {
 }
 
 
-export class NPCRenderable implements ObjectRenderable {
-    renderable: Renderable;
-    mesh: Three.Mesh;
-    raycaster = new Three.Raycaster();
+export class NPCRenderable extends ObjectRenderable {
 
     constructor (npc?: NPC, cb?: () => void) {
+        super();
         if (!npc || !npc.kind) return; // we have this so we can build blank classes to clone into
 
         let loader = new Three.JSONLoader();

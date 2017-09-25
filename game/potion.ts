@@ -83,12 +83,10 @@ export class Debuff {
     }
 }
 
-export class PotionRenderable implements ObjectRenderable {
-    renderable: Renderable;
-    mesh: Three.Mesh;
-    raycaster = new Three.Raycaster();
+export class PotionRenderable extends ObjectRenderable {
 
     constructor (potion?: Potion, cb?: () => void) {
+        super();
         if (!potion) return; // we have this so we can build blank classes to clone into
 
         let mat = { color: 0x0, opacity: 0.85 };
@@ -110,18 +108,6 @@ export class PotionRenderable implements ObjectRenderable {
         let r = new PotionRenderable(); //build blank class
         r.mesh = this.mesh.clone(); 
         return r;
-    }
-
-    build (r:Renderer, cb?: () => void) {
-        r.scene.add(this.mesh);
-
-        this.renderable = r.new(function(){});
-
-        if (cb) cb();
-    }
-
-    stop () {
-        this.renderable.stop(this.mesh);
     }
 
     rotate () {

@@ -124,12 +124,10 @@ export class Attributes {
     }
 }
 
-export class PlayerRenderable implements ObjectRenderable {
-    renderable: Renderable;
-    mesh: Three.Mesh;
-    raycaster = new Three.Raycaster();
+export class PlayerRenderable extends ObjectRenderable {
 
     constructor (r:Renderer, player: Player, cb?: () => void) {
+        super();
         let loader = new Three.JSONLoader();
         loader.load('./assets/models/player.json', (geometry, materials) => {
             var material = materials[0];
