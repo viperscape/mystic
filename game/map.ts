@@ -7,8 +7,7 @@ import {Tile} from "./tile";
 
 import events = require("events");
 import Three = require("three");
-import Monkey = require("./support/monkey");
-new Monkey.Monkey();
+require("./support/monkey");
 
 export class Map {
     map: Object;
