@@ -61,42 +61,6 @@ export class Map {
 
     render (r:Renderer) {
         this.renderer = r;
-
-                /*
-                else if (e["entry"]) {
-                    let mat = { color: 0x0, opacity: 1 };
-                    let stone_brown = 0x4b331d;
-                    let stone_grey = 0x424242;
-
-                    var cube = new Three.BoxGeometry(0.25,2,1);
-                    if (e["entry"] == "stone-grey") mat.color = stone_grey;
-                    else mat.color = stone_brown;
-
-                    var material = new Three.MeshLambertMaterial(mat);
-                    var mesh = new Three.Mesh(cube, material);
-                    r.scene.add(mesh);
-
-                    if (eidx == 0) mesh.position.x = eidx-0.5;
-                    else if (eidx == row.length-1) mesh.position.x = eidx+0.5;
-                    else mesh.position.x = eidx;
-
-                    mesh.rotation.y = Math.PI / 2;
-                    if (ridx == 0) mesh.position.z = ridx-0.5;
-                    else if (ridx == row.length-1) mesh.position.z = ridx+0.5;
-                    else {
-                        mesh.position.z = ridx;
-                        mesh.rotation.y = 0;
-                    }
-
-                    mesh.position.y += 1;
-
-                    this.zones.push({ 
-                        grid: [eidx,ridx], 
-                        target: e["target"], 
-                        idx: e["idx"], // may be undefined
-                        mesh: mesh
-                    });
-                }*/
                 
         let then_render = () => {
             if (this.map["spawn"]) {
@@ -185,32 +149,8 @@ export class Map {
     }
 
     // check if at zone entry/exit, reload new map if so
-    zone () {
-        /*for (var i in this.zones) {
-            if (on_same_tile(this.zones[i].grid, this.player.position_get())) {
-                let m = new Map(this.zones[i].target, this.items, this.ev);
-                m.player = this.player;
-                this.player.map = m; // update player map reference // NOTE: we should check that the ref is latest on change
-
-                this.stop();
-                if (this.ev) {
-                    this.ev.emit("map", m, () => {
-                        // find back zone and position player
-                        for (var i in m.zones) {
-                            if (m.zones[i].target == this.target_name) {
-                                this.player.position_set({
-                                    x:m.zones[i].grid[0], 
-                                    z:m.zones[i].grid[1]
-                                })
-                            }
-                        }
-                    });
-                }
-
-                break
-            }
-        }*/
-    }
+    // TODO: reimplement as empties in Blender and parse in, etc.
+    zone () {}
 
     // stop all renderables
     stop() {
