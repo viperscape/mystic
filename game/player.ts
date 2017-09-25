@@ -35,11 +35,7 @@ export class Player {
         ev.on("input", (e) => {
             if (e.position) {
                 let player_pos = this.position_get();
-                /*let dist = e.position.sub(player_pos);
-                if ((Math.abs(dist.y) > 20) || 
-                    (Math.abs(dist.x) > 80) ||
-                    (Math.abs(dist.z) > 80)) { console.log("too far",dist); return }*/
-
+                
                 if (!this.map) return;
                 let tpos:[number,number] = [
                     Math.round(e.position.x),
