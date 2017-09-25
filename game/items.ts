@@ -73,10 +73,10 @@ export class Items {
         else if (item == "npc") search = this.npcs;
         
 
-        if (search) { console.log(search)
+        if (search) {
             for (var e in search) {
                 var matches = true;
-                console.log(comp,search[e])
+                
                 for (var prop in comp) {
                     if (!search[e].hasOwnProperty(prop)) matches = false;
                     else matches = (search[e][prop] === comp[prop])
