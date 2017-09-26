@@ -1,5 +1,6 @@
 import {Renderable,ObjectRenderable,Renderer} from "./render";
-import {Attributes, Player} from "./player";
+import {Player} from "./player";
+import {Attributes} from "./attr";
 import {Map} from "./map";
 
 import Three = require("three");
