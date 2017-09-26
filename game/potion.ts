@@ -89,19 +89,7 @@ export class PotionRenderable extends ObjectRenderable {
         super();
         if (!potion) return; // we have this so we can build blank classes to clone into
 
-        let mat = { color: 0x0, opacity: 0.85 };
-        
-        if (potion.kind == "mindful") mat.color = 0x40E0D0;
-        else if (potion.kind == "berzerk") mat.color = 0xFF0000;
-        else mat.color = 0x222222;
-
-        let loader = new Three.JSONLoader();
-        loader.load('./assets/models/potion.json', (geometry, materials) => {
-            var material = materials[0];
-            material.setValues(mat);
-            this.mesh = new Three.Mesh(geometry, material);
-            if (cb) cb();
-        });
+        this.load("./assets/models/potions/"+potion.kind+".json",cb);
     }
 
     clone(): PotionRenderable {
@@ -110,12 +98,9 @@ export class PotionRenderable extends ObjectRenderable {
         return r;
     }
 
-    rotate () {
-        if (!this.renderable) return;
-
-        let draw = (r: Renderer) => {
+    draw_rotate() {
+        this.renderable.fn = (r:Renderer) => {
             this.mesh.rotation.y += r.delta * 45 * Math.PI / 180;
         };
-        this.renderable.fn = draw;
     }
 }
