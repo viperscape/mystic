@@ -128,14 +128,9 @@ export class PlayerRenderable extends ObjectRenderable {
 
     constructor (r:Renderer, player: Player, cb?: () => void) {
         super();
-        let loader = new Three.JSONLoader();
-        loader.load('./assets/models/player.json', (geometry, materials) => {
-            var material = materials[0];
-            this.mesh = new Three.Mesh(geometry, material);
+        this.load("./assets/models/player.json", () => {
             this.mesh.position.set(0,30,0);
-            r.scene.add(this.mesh);
-            this.renderable = r.new(function(){});
-            this.draw_position();
+            this.build(r);
             
             if (cb) cb();
         });

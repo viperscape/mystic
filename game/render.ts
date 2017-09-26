@@ -94,12 +94,17 @@ export class ObjectRenderable {
     mesh: Three.Mesh;
     raycaster: Three.Raycaster = new Three.Raycaster();
 
-    build (r:Renderer, cb?: () => void) {
+    load (path: string, cb?: ()=>void ) {
+        let loader = new Three.JSONLoader();
+        loader.load(path, (geometry, materials) => {
+            this.mesh = new Three.Mesh(geometry, materials[0]);
+            if (cb) cb();
+        });
+    }
+
+    build (r:Renderer) {
         r.scene.add(this.mesh);
-
         this.renderable = r.new(function(){});
-
-        if (cb) cb();
     }
 
     stop () {

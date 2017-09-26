@@ -79,9 +79,9 @@ export class Map {
                         this.player = new Player();
                         this.player.map = this;
                         
-                        this.player.render(r,() => {
+                        this.player.render(r, () => {
+                            this.player.renderable.draw_position();
                             maybe_snap(e.player.position,this.player.renderable);
-                            this.player.renderable.lookAt();
                             this.player.renderable.mesh.castShadow = true;
                         });
                     }
@@ -93,11 +93,10 @@ export class Map {
                             potion.from(p[rand]); // pick random of kind
                             
                             potion.renderable = this.items.potion_models[potion.kind].clone();
-                            potion.renderable.build(r, () => {
-                                maybe_snap(e.potion.position,potion.renderable);
-                                potion.renderable.rotate();
-                                potion.renderable.mesh.castShadow = true;
-                            });
+                            potion.renderable.build(r);
+                            potion.renderable.draw_rotate();
+                            maybe_snap(e.potion.position,potion.renderable);
+                            potion.renderable.mesh.castShadow = true;
                             
                             this.objects.potions.push(potion);
                         }
@@ -109,10 +108,9 @@ export class Map {
                         let n = this.items.find("npc",{kind:npc.kind});
                         if (n.length > 0) {
                             npc.renderable = this.items.npc_models[npc.kind].clone();
-                            npc.renderable.build(r, () => {
-                                maybe_snap(e.npc.position, npc.renderable);
-                                npc.renderable.mesh.castShadow = true;
-                            });
+                            npc.renderable.build(r);
+                            maybe_snap(e.npc.position, npc.renderable);
+                            npc.renderable.mesh.castShadow = true;
                         }
                     }
                 });

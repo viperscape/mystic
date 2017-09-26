@@ -26,28 +26,12 @@ export class NPCRenderable extends ObjectRenderable {
         super();
         if (!npc || !npc.kind) return; // we have this so we can build blank classes to clone into
 
-        let loader = new Three.JSONLoader();
-        loader.load("./assets/models/"+npc.kind+".json", (geometry, materials) => {
-            this.mesh = new Three.Mesh(geometry, materials[0]);
-            if (cb) cb();
-        });
+        this.load("./assets/models/"+npc.kind+".json",cb);
     }
 
     clone(): NPCRenderable {
         let r = new NPCRenderable(); //build blank class
         r.mesh = this.mesh.clone(); 
         return r;
-    }
-
-    build (r:Renderer, cb?: () => void) {
-        r.scene.add(this.mesh);
-
-        this.renderable = r.new(function(){});
-
-        if (cb) cb();
-    }
-
-    stop () {
-        this.renderable.stop(this.mesh);
     }
 }
