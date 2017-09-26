@@ -52,6 +52,7 @@ export class Potion {
         }
     }
 
+    // NOTE: these may become getters/setters for ecma5
     position_set (pos: {x,z, y?}) {
         if (this.renderable) {
             this.renderable.mesh.position.x = pos.x;
