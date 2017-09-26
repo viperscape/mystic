@@ -111,6 +111,8 @@ export class Map {
                             npc.renderable.build(r);
                             maybe_snap(e.npc.position, npc.renderable);
                             npc.renderable.mesh.castShadow = true;
+                            npc.ai.process()
+                            //npc.renderable.renderable.fn = () => { npc.ai.process() };
                         }
                     }
                 });

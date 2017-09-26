@@ -49,21 +49,26 @@ export class CombatAI {
     }
 
     process() {
+        console.log(last(this.state))
         for (var state in this.states) {
             let new_state = this.states[state];
             if (new_state.trigger()) {
-                if (new_state.action != this.state[this.state.length]) {
+                if (new_state.action != last(this.state)) {
                     this.state.push(new_state.action);
                     break;
                 }
             }
-            else if ((this.state[this.state.length].release) &&
-                (this.state[this.state.length].release())) {
+            else if ((last(this.state).release) &&
+                (last(this.state).release())) {
                 this.state.pop();
                 break;
             }
         }
 
-        this.state[this.state.length].action();
+        last(this.state).action();
     }
+}
+
+function last (a: any[]): any {
+    return a[a.length-1]
 }
