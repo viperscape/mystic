@@ -1,10 +1,12 @@
 // NOTE: this might split out to monster & npc separately
 
 import {ObjectRenderable,Renderable,Renderer} from "./render";
+import {AI} from "./ai";
+
 import Three = require("three");
 
 export class NPC {
-    ai: {}; // TODO: type of ai
+    //ai: AI;
     renderable: NPCRenderable;
     kind: string; // used to determine AI and model asset
     name: string; // may be blank
