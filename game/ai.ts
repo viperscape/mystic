@@ -1,26 +1,28 @@
-export class AI<S> {
-    influencers: Influencer<S>[]
+export class AI {
+    influencers: Influencer[]
 
-    step(s: S) {
-        this.influencers.forEach((i) => {
-            let result = i.process(s);
-            if (result > 1) {
-                
-            }
-        });
+    step(): AI {
+        for (var i in this.influencers) {
+            let result = this.influencers[i].process();
+            if (result) return result;
+        }
     }
 }
 
-export class Influencer<S> {
-    fn: (s: S) => number;
+export class Influencer {
+    fn: () => number;
     total: number;
+    next: AI;
 
-    constructor (fn: (s: S) => number) {
+    constructor (next: AI, fn: () => number) {
         this.fn = fn;
         this.total = 0;
+        this.next = next;
     }
-    process(s: S): number { 
-        this.total += this.fn(s); 
-        return this.total;
+    process(): AI { 
+        this.total += this.fn(); 
+        if (this.total > 1) {
+            return this.next;
+        }
      }
 }
