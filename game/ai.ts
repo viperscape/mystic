@@ -38,29 +38,32 @@ export class Influencer {
      }
 }
 
+// NOTE: if this shapes up, we'll rename to AI and drop the above concept
 export class CombatAI {
-    state: (() => void)[];
-    observe: Attributes;
+    state: {trigger,action,release?}[];
+    states: {default};
 
-    constructor (attr: Attributes) {
-        this.state = [this.patrol];
-        this.observe = attr;
+    constructor (attr: Attributes, states: {default}) {
+        this.state = [states.default];
+        this.states = states;
     }
 
     process() {
-        let last = this.state[this.state.length];
-        if (this.observe.health < 20) {
-            if (last != this.flee) this.state.push(this.flee);
+        for (var state in this.states) {
+            let new_state = this.states[state];
+            if (new_state.trigger()) {
+                if (new_state.action != this.state[this.state.length]) {
+                    this.state.push(new_state.action);
+                    break;
+                }
+            }
+            else if ((this.state[this.state.length].release) &&
+                (this.state[this.state.length].release())) {
+                this.state.pop();
+                break;
+            }
         }
-        else if (!last) this.state.push(this.patrol);
 
-        this.state[this.state.length]();
+        this.state[this.state.length].action();
     }
-
-    flee () {
-        console.log("flee");
-        if (this.observe.health > 25) this.state.pop();
-    }
-    attack () { console.log("attack") }
-    patrol () { console.log("patrol") }
 }

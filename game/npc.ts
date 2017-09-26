@@ -1,17 +1,40 @@
 // NOTE: this might split out to monster & npc separately
 
 import {ObjectRenderable,Renderable,Renderer} from "./render";
-import {AI} from "./ai";
+import {AI,CombatAI} from "./ai";
+import {Attributes} from "./attr";
 
 import Three = require("three");
 
 export class NPC {
-    //ai: AI;
+    ai: CombatAI;
     renderable: NPCRenderable;
     kind: string; // used to determine AI and model asset
     name: string; // may be blank
+    attributes: Attributes;
 
-    constructor() {}
+    constructor() {
+        this.attributes = new Attributes();
+        this.attributes.health = 100;
+        let ai_states = {
+            flee: {
+                trigger: () => { (this.attributes.health < 20) },
+                action: () => { console.log("flee"); },
+                release: () => { (this.attributes.health > 25) }
+            },
+            attack: {
+                trigger: () => { false }, //disabled trigger
+                action: () => { console.log("attack"); }
+                // TODO: actually impl a release strategy based on target health == 0
+            },
+            default: {
+                trigger: () => { (this.ai.state.length < 1) },
+                action: () => { console.log("patrol"); }
+            },
+        };
+
+        this.ai = new CombatAI(this.attributes, ai_states);
+    }
 
     from(obj: Object) {
         this.name = obj["name"];
