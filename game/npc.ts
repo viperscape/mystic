@@ -60,7 +60,9 @@ export class NPC {
     run_ai() {
         if (!this.renderable) return;
         let ai = this.ai;
-        this.renderable.renderable.fn = function () { ai.process(); };
+        setTimeout(() => { 
+            this.renderable.renderable.fn = function () { ai.process(); };
+        }, 1000);
     }
 
         // sets position of renderable and also grid position based on rounding
