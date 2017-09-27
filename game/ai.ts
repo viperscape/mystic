@@ -13,8 +13,9 @@ export class AI {
     process() {
         for (var state in this.states) {
             let new_state = this.states[state];
+            let last_state = last(this.state);
             if (new_state.trigger()) {
-                if (new_state != last(this.state)) {
+                if (new_state != last_state) {
                     if (!this.push_lock) {
                         this.state.push(new_state);
                         this.push_lock = new_state.push_lock; // we only care if this is true
@@ -23,10 +24,10 @@ export class AI {
                     break; // NOTE: break regardless of lock state
                 }
             }
-            else if ((last(this.state).release) &&
-                (last(this.state).release())) {
-                let old_state = this.state.pop();
-                if (old_state.push_lock) this.push_lock = false;
+            else if ((last_state.release) &&
+                (last_state.release())) {
+                last_state = this.state.pop();
+                if (last_state.push_lock) this.push_lock = false;
                 break;
             }
         }
