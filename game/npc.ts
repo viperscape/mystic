@@ -1,13 +1,13 @@
 // NOTE: this might split out to monster & npc separately
 
 import {ObjectRenderable,Renderable,Renderer} from "./render";
-import {AI,CombatAI} from "./ai";
+import {AI} from "./ai";
 import {Attributes} from "./attr";
 
 import Three = require("three");
 
 export class NPC {
-    ai: CombatAI;
+    ai: AI;
     renderable: NPCRenderable;
     kind: string; // used to determine AI and model asset
     name: string; // may be blank
@@ -33,7 +33,7 @@ export class NPC {
             },
         };
 
-        this.ai = new CombatAI(this.attributes, ai_states);
+        this.ai = new AI(this.attributes, ai_states);
     }
 
     from(obj: Object) {

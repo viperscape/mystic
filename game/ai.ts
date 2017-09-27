@@ -1,45 +1,6 @@
 import {Attributes} from "./attr";
 
 export class AI {
-    protected influencers: {string:Influencer};
-
-    constructor (is?: {string:Influencer}) {
-        if (is) this.influencers = is;
-    }
-
-    step() {
-        for (var i in this.influencers) {
-            this.influencers[i].process();
-        }
-    }
-
-    insert (name: string, i:Influencer) {
-        this.influencers[name] = i;
-    }
-
-    remove (name:string) { delete this.influencers[name] }
-}
-
-export class Influencer {
-    fn: () => number;
-    total: number;
-    next: () => number;
-
-    constructor (next: () => number, fn: () => number) {
-        this.fn = fn;
-        this.total = 0.5;
-        this.next = next;
-    }
-    process() { 
-        this.total += this.fn(); 
-        if (this.total > 1) {
-            this.fn = this.next;
-        }
-     }
-}
-
-// NOTE: if this shapes up, we'll rename to AI and drop the above concept
-export class CombatAI {
     state: {trigger,action,release?, push_lock?}[];
     states: {default};
     push_lock = false;
