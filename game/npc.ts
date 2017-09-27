@@ -20,6 +20,7 @@ export class NPC {
         this.attributes = new Attributes();
         this.attributes.health = 100;
 
+        // NOTE: party or summonables will require a slight rework-- iterate each and check distances, etc
         let ai_states = {
             flee: {
                 trigger: () => { return (this.attributes.health < 20) },
