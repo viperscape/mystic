@@ -83,7 +83,6 @@ export class Player {
         });
     }
 
-    // sets position of renderable and also grid position based on rounding
     position_set (pos: {x,z, y?}) {
         if (this.renderable) {
             this.renderable.mesh.position.x = pos.x;
