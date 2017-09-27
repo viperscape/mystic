@@ -40,8 +40,9 @@ export class Influencer {
 
 // NOTE: if this shapes up, we'll rename to AI and drop the above concept
 export class CombatAI {
-    state: {trigger,action,release?}[];
+    state: {trigger,action,release?, push_lock?}[];
     states: {default};
+    push_lock = false;
 
     constructor (attr: Attributes, states: {default}) {
         this.state = [states.default];
@@ -54,13 +55,18 @@ export class CombatAI {
             let new_state = this.states[state];
             if (new_state.trigger()) {
                 if (new_state.action != last(this.state)) {
-                    this.state.push(new_state.action);
-                    break;
+                    if (!this.push_lock) {
+                        this.state.push(new_state.action);
+                        this.push_lock = new_state.push_lock; // we only care if this is true
+                    }
+
+                    break; // NOTE: break regardless of lock state
                 }
             }
             else if ((last(this.state).release) &&
                 (last(this.state).release())) {
-                this.state.pop();
+                let old_state = this.state.pop();
+                if (old_state.push_lock) this.push_lock = false;
                 break;
             }
         }
