@@ -3,6 +3,7 @@ import {Renderer} from "./render";
 
 import astar = require("javascript-astar");
 import Tween = require("@tweenjs/tween.js");
+import Three = require("three");
 
 export class Move {
     route: [[number,number]]; //start to finish list of tiles
@@ -10,8 +11,18 @@ export class Move {
     tween: Tween.Tween;
 
     // optionally use a decimal for tween start
-    constructor (from: [number,number], to: [number,number], map: Map, current?: {x,z}) {
+    constructor (fpos: Three.Vector3, tpos: Three.Vector3, map: Map, current?: {x,z}) {
         this.route = [] as [[number,number]];
+
+        let to:[number,number] = [
+            Math.round(tpos.x),
+            Math.round(tpos.z)
+        ];
+        let from:[number,number] = [
+            Math.round(fpos.x),
+            Math.round(fpos.z)
+        ];
+
         this.route.push(from);
 
         let layout = [];

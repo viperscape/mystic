@@ -39,25 +39,17 @@ export class Player {
                 let player_pos = this.position_get();
                 
                 if (!this.map) return;
-                let tpos:[number,number] = [
-                    Math.round(e.position.x),
-                    Math.round(e.position.z)
-                ];
-                let fpos:[number,number] = [
-                    Math.round(player_pos.x),
-                    Math.round(player_pos.z)
-                ];
 
                 if (this.move) { 
                     this.move.tween.stop();
                     this.move = new Move(
-                        fpos, 
-                        tpos,
+                        player_pos, 
+                        e.position,
                         this.map, 
                         this.position_get()
                     );
                 }
-                else this.move = new Move(fpos, tpos, this.map);
+                else this.move = new Move(player_pos, e.position, this.map);
 
                 this.move.render({
                     renderer: this.renderable.renderable.renderer, 
