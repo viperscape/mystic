@@ -46,7 +46,7 @@ export class Player {
                         player_pos, 
                         e.position,
                         this.map, 
-                        this.position_get()
+                        player_pos
                     );
                 }
                 else this.move = new Move(player_pos, e.position, this.map);
