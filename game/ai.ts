@@ -11,7 +11,6 @@ export class AI {
     }
 
     process() {
-        console.log(last(this.state))
         for (var state in this.states) {
             let new_state = this.states[state];
             if (new_state.trigger()) {

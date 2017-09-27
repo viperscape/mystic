@@ -42,6 +42,12 @@ export class NPC {
 
         if (!this.kind) console.error("No NPC kind stated")
     }
+
+    run_ai() {
+        if (!this.renderable) return;
+        let ai = this.ai;
+        this.renderable.renderable.fn = function () { ai.process(); };
+    }
 }
 
 
