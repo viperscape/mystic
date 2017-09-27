@@ -102,7 +102,7 @@ export class Map {
                         }
                     }
                     else if (e.npc) {
-                        let npc = new NPC;
+                        let npc = new NPC(this);
                         npc.from(e.npc);
 
                         let n = this.items.find("npc",{kind:npc.kind});

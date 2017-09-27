@@ -23,6 +23,7 @@ export class Player {
     constructor(map?) {
         this.items = new Items;
         this.attributes = new Attributes;
+        this.attributes.health = 100;        
         this.map = map;
     }
 

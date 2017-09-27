@@ -14,9 +14,9 @@ export class AI {
         for (var state in this.states) {
             let new_state = this.states[state];
             if (new_state.trigger()) {
-                if (new_state.action != last(this.state)) {
+                if (new_state != last(this.state)) {
                     if (!this.push_lock) {
-                        this.state.push(new_state.action);
+                        this.state.push(new_state);
                         this.push_lock = new_state.push_lock; // we only care if this is true
                     }
 
