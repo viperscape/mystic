@@ -49,7 +49,7 @@ export class PotionTests {
         potion.use(p);
 
         setTimeout(() => {
-            assert.equal(p.attributes.health, 5);
+            assert.equal(p.attributes.health, 105);
             assert.equal(p.attributes.insight, 0);
         }, 1);
     }

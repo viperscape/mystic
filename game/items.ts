@@ -53,7 +53,7 @@ export class Items {
 
         // NOTE: we should allow overrides on npcs
         obj["npcs"].forEach(element => {
-            let npc = new NPC;
+            let npc = new NPC(null); // NOTE: we don't actually need map here, we're building npc regardless
             npc.from(element);
             
             if (!this.npc_models[npc.kind]) {

@@ -4,6 +4,8 @@ import {assert} from "./tests";
 import {Map} from "../game/map";
 import {Move} from "../game/move";
 
+import {Vector3} from "three";
+
 export class MapTests {
     maps: Map[] = [];
 
@@ -21,7 +23,7 @@ export class MapTests {
 
     // expects open_maps to parse maps previously
     pathing() {
-        let m = new Move([3,4], [0,2], this.maps[0]);
+        let m = new Move(new Vector3(3,0,4), new Vector3(1,0,2), this.maps[0]);
         assert(m.route.length > 0);
     }
 }

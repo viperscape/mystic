@@ -1,4 +1,3 @@
-import pixi = require("pixi.js");
 import Three = require("three");
 
 export function render (target_gui) {
@@ -6,22 +5,6 @@ export function render (target_gui) {
     const HEIGHT = window.innerHeight;
 
     let target = document.getElementById(target_gui);
-
-    const ctx_2d = new pixi.Application(WIDTH, HEIGHT, { transparent: true });
-    target.appendChild(ctx_2d.view);
-
-    
-
-    draw_test(ctx_2d);
-}
-
-function draw_test(ctx) {
-    let text = new pixi.Text('mystic',{fontFamily : 'Consolas', fontSize: 14, fill : 0x222222, align : 'center'});
-    text.interactive = true;
-    text.on('mousedown', (event) => {
-        console.log(event)
-     });
-    ctx.stage.addChild(text);
 }
 
 export function init_3d(): Renderer {
