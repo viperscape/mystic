@@ -10,7 +10,6 @@
   "dependencies": {
     "@tweenjs/tween.js": "^17.1.0",
     "javascript-astar": "^0.4.1",
-    "pixi.js": "^4.5.5",
     "three": "^0.87.1"
   },
   "devDependencies": {
