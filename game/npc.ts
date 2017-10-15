@@ -20,13 +20,13 @@ export class NPC {
 
     time: number = 0;
 
-    constructor(map: Map) {
+    constructor(map: Map, ai_states_?: {default}) {
         this.map = map;
         this.attributes = new Attributes();
         this.attributes.health = 100;
 
         // NOTE: party or summonables will require a slight rework-- iterate each and check distances, etc
-        let ai_states = {
+        let ai_states = ai_states_ || {
             flee: {
                 trigger: () => { return (this.attributes.health < 20) },
                 action: () => { console.log("flee"); },
